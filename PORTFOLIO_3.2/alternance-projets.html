@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternance - Projets</title>
+
+    <!-- ✅ ANTI-FLASH -->
+    <script>
+        (function () {
+            if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+
+    <link rel="stylesheet" href="alter-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Bouton retour en haut -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Bouton accessibilité -->
+    <button id="btn-access" aria-label="Options d'accessibilité">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Panneau accessibilité -->
+    <div id="access-panel" role="dialog" aria-label="Options d'accessibilité">
+        <div class="panel-title" data-fr="Paramètres" data-en="Settings">Paramètres</div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-globe"></i>
+                <span data-fr="Langue" data-en="Language">Langue</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn active" id="langFR" onclick="setLang('fr')">FR</button>
+                <button class="lang-btn" id="langEN" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-volume-up"></i>
+                <span data-fr="Lecture vocale" data-en="Voice reading">Lecture vocale</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn" id="voiceFR" onclick="playVoice('fr')">FR</button>
+                <button class="lang-btn" id="voiceEN" onclick="playVoice('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="reading-indicator" id="reading-indicator">
+            <div class="reading-dot"></div>
+            <span data-fr="Lecture en cours…" data-en="Reading in progress…">Lecture en cours…</span>
+        </div>
+
+        <button class="access-btn" id="btn-theme">
+            <i class="fas fa-moon" id="theme-icon"></i>
+            <span id="theme-label">Mode sombre</span>
+        </button>
+    </div>
+
+    <!-- Overlay menu mobile -->
+    <div class="mobile-overlay" id="overlay"></div>
+
+    <!-- NAVBAR -->
+    <nav class="custom-nav">
+        <div class="nav-inner">
+            <a class="navbar-brand" href="index.html">
+                <img id="logo-img" src="IMAGES/LOGOS/logo-1.webp" alt="Logo WA">
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                <li><a href="index.html#apropos" class="nav-link" data-fr="À propos" data-en="About">À propos</a></li>
+                <li><a href="index.html#competences" class="nav-link" data-fr="Compétences"
+                        data-en="Skills">Compétences</a></li>
+                <li class="has-dropdown">
+                    <a href="#" class="nav-link active">
+                        <span data-fr="Projets" data-en="Projects">Projets</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en
+                                MMI</a></li>
+                        <li><a href="alternance-projets.html" class="active" data-fr="Alternance"
+                                data-en="Internship">Alternance</a></li>
+                        <li><a href="perso-projets.html" data-fr="Projets Personnels"
+                                data-en="Personal Projects">Projets Personnels</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="index.html#contact" class="nav-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+
+            <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+            <li><a href="index.html#apropos" class="mobile-link" data-fr="À propos" data-en="About">À propos</a></li>
+            <li><a href="index.html#competences" class="mobile-link" data-fr="Compétences"
+                    data-en="Skills">Compétences</a></li>
+            <li>
+                <button class="mobile-sub-btn" id="subBtn">
+                    <span data-fr="Projets" data-en="Projects">Projets</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="mobile-sub-list" id="subList">
+                    <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en MMI</a>
+                    </li>
+                    <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a></li>
+                    <li><a href="perso-projets.html" data-fr="Projets Personnels" data-en="Personal Projects">Projets
+                            Personnels</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="mobile-sep"></div>
+        <a href="index.html#contact" class="mobile-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+    </div>
+
+    <!-- BANNIÈRE -->
+    <section class="banner">
+        <div class="banner-content"></div>
+    </section>
+
+    <!-- PRÉSENTATION DE L'ENTREPRISE -->
+    <section class="entreprise" id="entreprise">
+        <div class="entreprise-wrapper">
+            <h2 class="section-title" data-fr="L'entreprise" data-en="The Company">L'entreprise</h2>
+
+            <div class="entreprise-top">
+                <div class="entreprise-card">
+                    <h2 class="entreprise-name">4A2E</h2>
+                    <p class="entreprise-role" data-fr="Société de Sécurité Informatique & Création Digitale"
+                        data-en="IT Security Company">
+                        Société de Sécurité Informatique & Création Digitale</p>
+                    <p class="entreprise-text"
+                        data-fr="4A2E est une agence spécialisée dans la création graphique et la communication visuelle. Durant mon alternance, j'ai eu l'opportunité de travailler sur des projets variés allant de la création d'affiches à la conception de supports numériques, en passant par la retouche photo et la mise en page éditoriale."
+                        data-en="4A2E is an agency specializing in graphic design and visual communication. During my work-study program, I had the opportunity to work on varied projects ranging from poster creation to digital media design, including photo retouching and editorial layout.">
+                        4A2E est une agence spécialisée dans la création graphique et la communication visuelle. Durant
+                        mon alternance, j'ai eu l'opportunité de travailler sur des projets variés allant de la création
+                        d'affiches à la conception de supports numériques, en passant par la retouche photo et la mise
+                        en page éditoriale.
+                    </p>
+                    <a href="https://www.4a2e.fr" target="_blank" rel="noopener" class="entreprise-btn">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span data-fr="Voir le site" data-en="Visit website">Voir le site</span>
+                    </a>
+                </div>
+
+                <div class="entreprise-photo" id="entreprisePhoto">
+                    <img src="IMAGES/VISUEL/cover_securite.webp" alt="Site vitrine de 4A2E" class="card-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MON RÔLE ET MISSIONS -->
+    <section class="role-section">
+        <div class="role-wrapper">
+
+            <div class="role-card">
+                <div class="role-card-cover">
+                    <img src="IMAGES/PHOTO/cover-alexia-4a2e.webp" alt="Site vitrine de 4A2E" class="card-img">
+                </div>
+                <div class="role-card-body">
+                    <p class="role-card-desc"
+                        data-fr="Durant mon alternance chez 4A2E, j'interviens sur des projets variés : création graphique, conception web et gestion de la communication visuelle de l'agence et de ses clients."
+                        data-en="During my work-study program at 4A2E, I work on varied projects: graphic design, web design and visual communication management for the agency and its clients.">
+                        Durant mon alternance chez 4A2E, j'interviens sur des projets variés : création graphique,
+                        conception web et gestion de la communication visuelle de l'agence et de ses clients.
+                    </p>
+                </div>
+            </div>
+
+            <div class="role-right">
+                <h2 class="role-title" data-fr="Mon rôle &amp; Mes missions" data-en="My Role &amp; Missions">Mon rôle
+                    &<br>Mes missions</h2>
+
+                <div class="missions-grid">
+
+                    <div class="mission-card">
+                        <div class="mission-icon"><i class="fas fa-pen-nib"></i></div>
+                        <div>
+                            <div class="mission-label" data-fr="Infographiste" data-en="Graphic Designer">Infographiste
+                            </div>
+                            <div class="mission-sub" data-fr="Création de supports visuels print & digital"
+                                data-en="Creating print & digital visual media">Création de supports visuels print &
+                                digital</div>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div>
+                            <div class="mission-label" data-fr="Web-Designer" data-en="Web Designer">Web-Designer</div>
+                            <div class="mission-sub" data-fr="Conception d'interfaces et maquettes web"
+                                data-en="Designing web interfaces and mockups">Conception d'interfaces et maquettes web
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-icon"><i class="fas fa-bullhorn"></i></div>
+                        <div>
+                            <div class="mission-label" data-fr="Community Manager" data-en="Community Manager">Community
+                                Manager</div>
+                            <div class="mission-sub" data-fr="Gestion des réseaux et supports de com'"
+                                data-en="Managing social media and communication materials">Gestion des réseaux et
+                                supports de com'</div>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-icon"><i class="fas fa-microchip"></i></div>
+                        <div>
+                            <div class="mission-label" data-fr="Assistante Informatique" data-en="IT Technician">
+                                Assistante Informatique
+                            </div>
+                            <div class="mission-sub" data-fr="Maintenance Informatique" data-en="IT Maintenance">
+                                Maintenance Informatique</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJETS ALTERNANCE -->
+    <section class="alt-projects" id="projets">
+        <div class="alt-wrapper">
+
+            <h2 class="alt-title" data-fr="Mes projets" data-en="My Projects">Mes projets</h2>
+
+            <div class="filters-wrap">
+                <div class="filters-bar" id="filtersBar">
+                    <div class="filter-pill" id="filterPill"></div>
+                    <button class="filter-btn active" data-filter="all" data-fr="Tout" data-en="All">Tout</button>
+                    <button class="filter-btn" data-filter="web" data-fr="Site Web" data-en="Website">Site Web</button>
+                    <button class="filter-btn" data-filter="visuel" data-fr="Visuels" data-en="Visuals">Visuels</button>
+                    <button class="filter-btn" data-filter="logo" data-fr="Logo" data-en="Logo">Logo</button>
+                </div>
+            </div>
+
+            <div class="carousel-wrap">
+                <div class="carousel-track-wrap">
+                    <div class="carousel-track" id="carouselTrack">
+
+                        <!--SITE-WEB-->
+                        <!--4A2E-->
+                        <div class="project-card" data-category="web" data-title-fr="Site vitrine 4A2E"
+                            data-title-en="4A2E Showcase Website"
+                            data-desc-fr="Création du site vitrine de la société 4A2E. Cette plateforme moderne, claire et attractive permet à 4A2E de se démarquer et d'offrir une expérience utilisateur professionnelle."
+                            data-desc-en="Creation of the 4A2E company showcase website. This modern, clear and attractive platform allows 4A2E to stand out and offer a professional user experience."
+                            data-tags="WORDPRESS, HTML,CSS,JS" data-link="https://4a2e.com">
+                            <img src="IMAGES/VISUEL/cover-4a2e.webp" alt="Site vitrine de 4A2E" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">WORDPRESS</span>
+                                    <span class="card-tag">HTML</span>
+                                    <span class="card-tag">CSS</span>
+                                    <span class="card-tag">JS</span>
+                                </div>
+                                <div class="card-title" data-fr="Site vitrine 4A2E" data-en="4A2E Showcase Website">Site
+                                    vitrine 4A2E</div>
+                            </div>
+                        </div>
+
+                        <!--SYNERGIE BTP-->
+                        <div class="project-card" data-category="web" data-title-fr="Site vitrine SynergieBTP"
+                            data-title-en="SynergieBTP Showcase Website" data-desc-fr="Réalisation du site vitrine de SynergieBTP afin de mettre en valeur leur activité, 
+                            leur identité et leurs services. Ce projet m'a permis de travailler sur la conception et le développement 
+                            d'un site professionnel adapté aux besoins du client."
+                            data-desc-en="Creation of the SynergieBTP showcase website to highlight their activity, identity and services. 
+                            This project allowed me to work on the design and development of a professional website tailored to the client's needs."
+                            data-tags="WORDPRESS, HTML,CSS,JS" data-link="https://synergiebtp.com/">
+                            <img src="IMAGES/VISUEL/cover-synergie.webp" alt="Site vitrine SynergieBTP"
+                                class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">WORDPRESS</span>
+                                    <span class="card-tag">HTML</span>
+                                    <span class="card-tag">CSS</span>
+                                    <span class="card-tag">JS</span>
+                                </div>
+                                <div class="card-title" data-fr="Site vitrine SynergieBTP"
+                                    data-en="SynergieBTP Showcase Website">Site
+                                    vitrine SynergieBTP</div>
+                            </div>
+                        </div>
+
+                        <!--VISUELS-->
+                        <!--VIVRACTIVE-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Qui est Vivractive ?"
+                            data-title-en="Who is Vivractive ?" data-desc-fr="J'ai réalisé en collaboration avec Kériane Saban un post Instagram de présentation de 
+                            l'entreprise Vivractive, mettant en avant son identité, ses missions et ses activités. Nous avons également 
+                            travaillé ensemble sur d'autres publications pour cette même structure. " data-desc-en="I collaborated with Kériane Saban to create an Instagram presentation post for the company Vivractive, 
+                            highlighting its identity, missions and activities. We also worked together on other publications for this 
+                            organization." data-tags="Post,Instagram" data-link="IMAGES/VISUEL/Post-vivractive.pdf">
+                            <img src="IMAGES/VISUEL/cover-vivractive.webp" alt="Post Instagram de Vivractive"
+                                class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Post</span>
+                                    <span class="card-tag">Instagram</span>
+                                </div>
+                                <div class="card-title" data-fr="Qui est Vivractive ?" data-en="Who is Vivractive ?">
+                                    Présentation Vivractive</div>
+                            </div>
+                        </div>
+
+                        <!--AGLS : Post de présentation-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Qui est l'AGLS ?"
+                            data-title-en="Who is AGLS" data-desc-fr="Réalisation d'une publication de présentation de l'association AGLS, avec pour objectif 
+                            de clarifier son activité et son identité, souvent confondues. " data-desc-en="Creation of a presentation post for the AGLS association, with the aim of clarifying its 
+                            activity and identity, which are often confused." data-tags="Réseaux,Photoshop,Motion"
+                            data-link="IMAGES/VISUEL/Post-agls-1.pdf">
+                            <img src="IMAGES/VISUEL/cover-agls-1.webp" alt="Post Instagram AGLS 1" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Post</span>
+                                    <span class="card-tag">Instagram</span>
+                                </div>
+                                <div class="card-title" data-fr="Qui est l'AGLS ?" data-en="Who is AGLS">
+                                    Qui est l'AGLS ?</div>
+                            </div>
+                        </div>
+
+                        <!--AGLS : Post "comment bien gérer son budget"-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Comment gérer son budget ?"
+                            data-title-en="How do you manage your budget?" data-desc-fr="Dans la continuité des publications réalisées pour l'AGLS, j'ai conçu un post dédié aux conseils pour bien gérer 
+                            son budget." data-desc-en="Following on from the publications created for the AGLS, I designed a post dedicated to tips for managing your 
+                            budget effectively." data-tags="Post,Instagram" data-link="IMAGES/VISUEL/Post-agls-2.pdf">
+                            <img src="IMAGES/VISUEL/cover-agls-2.webp" alt="Post Instagram AGLS 2" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Post</span>
+                                    <span class="card-tag">Instagram</span>
+                                </div>
+                                <div class="card-title" data-fr="Comment gérer son budget ?"
+                                    data-en="How do you manage your budget?">Comment gérer son budget ?</div>
+                            </div>
+                        </div>
+
+                        <!--AGLS : Affiche-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Démarches administratif"
+                            data-title-en="Administrative Procedures"
+                            data-desc-fr="Dans le cadre de ma mission pour l'AGLS, j'ai réalisé une affiche destinée aux locataires, conçue aux couleurs de l'association afin d'assurer 
+                            une cohérence visuelle avec son identité. L'objectif était de produire un support clair, lisible et agréable à consulter."
+                            data-desc-en="As part of my mission for the AGLS, I created a poster intended for tenants, designed in the association's colors to ensure visual consistency 
+                            with its identity. The goal was to produce a clear, readable and visually appealing communication tool."
+                            data-tags="Affiche,Information" data-link="IMAGES/VISUEL/affiche-agls.png">
+                            <img src="IMAGES/VISUEL/cover-agls-3.webp" alt="Affiche AGLS" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Affiche</span>
+                                    <span class="card-tag">Information</span>
+                                </div>
+                                <div class="card-title" data-fr="Démarches administratif"
+                                    data-en="Administrative Procedures">Démarches administratif</div>
+                            </div>
+                        </div>
+
+                        <!--JBC : Post "TOP7 des restaurants"-->
+                        <div class="project-card" data-category="visuel" data-title-fr="TOP 7 des restaurants"
+                            data-title-en="Top 7 Restaurants" data-desc-fr="Dans le cadre de ma mission pour Jarry Business Center, j'ai réalisé un post destiné à être publié prochainement, 
+                            présentant les différents restaurants situés aux alentours de l'entreprise sous forme de classement. Un contenu pratique et engageant 
+                            pensé pour la communauté du centre d'affaires."
+                            data-desc-en="As part of my mission for Jarry Business Center, I created a post soon to be published, presenting the various restaurants 
+                            located around the company in the form of a ranking. A practical and engaging piece of content designed for the business center's community."
+                            data-tags="Post,Instagram" data-link="IMAGES/VISUEL/Post-jbc-1.pdf">
+                            <img src="IMAGES/VISUEL/cover-jbc-3.webp" alt="Post Instagram JBC" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Post</span>
+                                    <span class="card-tag">Instagram</span>
+                                </div>
+                                <div class="card-title" data-fr="TOP 7 des restaurants" data-en="Top 7 Restaurants">
+                                    TOP 7 des restaurants</div>
+                            </div>
+                        </div>
+
+                        <!--JBC : AFFICHE DOMICILIATION-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Domiciliation"
+                            data-title-en="Registered Address" data-desc-fr="Réalisation d'une affiche destinée à informer les personnes présentes dans les locaux au sujet de la domiciliation, placée à proximité 
+                            des boîtes aux lettres. L'objectif était de produire un support clair et visible pour faciliter la compréhension des démarches 
+                            liées à la domiciliation."
+                            data-desc-en="Creation of a poster designed to inform people on the premises about the domiciliation service, placed near the mailboxes. The goal 
+                            was to produce a clear and visible communication tool to facilitate understanding of the domiciliation process."
+                            data-tags="Affiche,Information" data-link="IMAGES/VISUEL/affiche-jbc.png">
+                            <img src="IMAGES/VISUEL/cover-jbc-1.webp" alt="Affiche Domiciliation" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Affiche</span>
+                                    <span class="card-tag">Information</span>
+                                </div>
+                                <div class="card-title" data-fr="Domiciliation" data-en="Registered Address">
+                                    Domiciliation</div>
+                            </div>
+                        </div>
+
+                        <!--JBC : PANCARTE-->
+                        <div class="project-card" data-category="visuel" data-title-fr="Pancartes Jarry Business Center"
+                            data-title-en="Signs at Jarry Business Center"
+                            data-desc-fr="Dans le but d'informer au mieux les personnes, j'ai réalisé des visuels destinés à des panneaux de signalétique. 
+                            L'objectif était d'indiquer clairement l'emplacement des locaux tout en présentant en quelques mots l'activité de l'entreprise."
+                            data-desc-en="With the aim of informing people as effectively as possible, I created visuals for signage panels. The goal was to 
+                            clearly indicate the location of the premises while presenting the company's activity in just a few words."
+                            data-tags="Panneau,Visuel,Information" data-link="IMAGES/VISUEL/projet-jbc-2.pdf">
+                            <img src="IMAGES/VISUEL/cover-jbc-2.webp" alt="Pancartes JBC" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Panneau</span>
+                                    <span class="card-tag">Visuel</span>
+                                    <span class="card-tag">Information</span>
+                                </div>
+                                <div class="card-title" data-fr="Pancartes Jarry Business Center"
+                                    data-en="Signs at Jarry Business Center">Pancartes
+                                    Jarry Business Center</div>
+                            </div>
+                        </div>
+
+                        <!--LOGOS-->
+                        <!-- Projet AVEC avant/après -->
+                        <div class="project-card" data-category="logo" data-title-fr="Logo AGLS"
+                            data-title-en="AGLS Logo" data-desc-fr="L'objectif de ce projet était de moderniser l'image de l'AGLS, de mettre en valeur son activité et son identité visuelle, 
+                            tout en veillant à ce qu'elle soit claire, compréhensible et professionnelle. Ce projet m'a permis de réfléchir aux différents éléments 
+                            à intégrer pour que l'identité de l'association soit immédiatement perceptible. "
+                            data-desc-en="The goal of this project was to modernize the image of the AGLS, to enhance its activity and visual identity, while ensuring 
+                            it was clear, understandable and professional. This project led me to think through the various elements to include so that the association's 
+                            identity could be immediately perceived." data-tags="Logo,Refonte" data-link="#"
+                            data-img-before="IMAGES/LOGOS/cover-logo-agls_1.webp"
+                            data-img-after="IMAGES/LOGOS/cover-logo-agls.webp">
+                            <img src="IMAGES/LOGOS/cover-logo-agls.webp" alt="Logo AGLS" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Logo</span>
+                                    <span class="card-tag">Refonte</span>
+                                </div>
+                                <div class="card-title" data-fr="Logo AGLS" data-en="AGLS Logo">Logo AGLS</div>
+                            </div>
+                        </div>
+
+                        <!-- Projet AVEC avant/après -->
+                        <div class="project-card" data-category="logo" data-title-fr="Logo 4A2E"
+                            data-title-en="4A2E Logo" data-desc-fr="À la demande de mon tuteur, j'ai réalisé la refonte du logo de l'entreprise afin de le rendre plus professionnel 
+                            et d'assurer une cohérence entre son identité visuelle et son activité." data-desc-en="At my tutor's request, I redesigned the company's logo to make it more professional and ensure consistency between 
+                            its visual identity and its activity." data-tags="Logo,Refonte" data-link="#"
+                            data-img-before="IMAGES/LOGOS/cover-logo-4a2e-2.webp"
+                            data-img-after="IMAGES/LOGOS/cover-logo-4a2e.webp">
+                            <img src="IMAGES/LOGOS/cover-logo-4a2e.webp" alt="Logo 4A2E" class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Logo</span>
+                                    <span class="card-tag">Refonte</span>
+                                </div>
+                                <div class="card-title" data-fr="Logo 4A2E" data-en="4A2E Logo">Logo 4A2E</div>
+                            </div>
+                        </div>
+
+                        <!-- Projet AVEC avant/après -->
+                        <div class="project-card" data-category="logo" data-title-fr="Logo CariPropreté"
+                            data-title-en="CariProprete Logo" data-desc-fr="J'ai réalisé le changement de logo intégrant le nom de l'entreprise, afin d'assurer une mise à jour cohérente 
+                            de son identité visuelle."
+                            data-desc-en="I carried out the logo update incorporating the company name, ensuring a consistent refresh of its visual identity."
+                            data-tags="Logo,Refonte" data-link="#"
+                            data-img-before="IMAGES/LOGOS/cover-logo-cariproprete-2.webp"
+                            data-img-after="IMAGES/LOGOS/cover-logo-cariproprete.webp">
+                            <img src="IMAGES/LOGOS/cover-logo-cariproprete.webp" alt="Logo CariPropreté"
+                                class="card-img">
+                            <div class="card-body">
+                                <div class="card-tags">
+                                    <span class="card-tag">Logo</span>
+                                    <span class="card-tag">Refonte</span>
+                                </div>
+                                <div class="card-title" data-fr="Logo CariPropreté" data-en="CariProprete Logo">
+                                    Logo CariPropreté</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="carousel-arrows">
+                    <button class="carousel-arrow" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-arrow" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modale -->
+    <div class="modal-overlay" id="altModalOverlay">
+        <div class="modal">
+            <div id="altModalImgWrap" class="modal-img-side"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="altModalTitle"></h2>
+                    <button class="modal-close" id="altModalClose"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-tags" id="altModalTags"></div>
+                <div class="modal-sep"></div>
+                <div>
+                    <div class="modal-label" data-fr="Description" data-en="Description">Description</div>
+                    <p class="modal-desc" id="altModalDesc"></p>
+                </div>
+                <a href="#" class="modal-link" id="altModalLink" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span data-fr="Voir le projet" data-en="View project">Voir le projet</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TÉMOIGNAGES -->
+    <section class="temoignages" id="temoignages">
+        <div class="temo-wrapper">
+
+            <h2 class="temo-title" data-fr="Témoignages" data-en="Testimonials">Témoignages</h2>
+
+            <div class="temo-carousel-wrap">
+                <div class="temo-track-wrap">
+                    <div class="temo-track" id="temoTrack">
+
+                        <div class="temo-card">
+                            <div class="temo-header">
+                                <div>
+                                    <div class="temo-name">Raphaël WALTER</div>
+                                    <div class="temo-role" data-fr="Directeur de 4A2E" data-en="Director of 4A2E">
+                                        Directeur de 4A2E</div>
+                                </div>
+                                <i class="fas fa-quote-right temo-quote-icon"></i>
+                            </div>
+                            <div class="temo-sep"></div>
+                            <p class="temo-text"
+                                data-fr="« Voilà maintenant deux ans qu'Alexia évolue au sein de l'entreprise 4A2E. 
+                            Au cours de cette période, elle a su, grâce à son implication, sa détermination et sa persévérance, 
+                            contribuer activement au développement de l'activité infographie et webmaster. Son parcours témoigne 
+                            d'un réel professionnalisme et d'une motivation constante dans la réalisation de ses missions. »" data-en="« Alexia has now been with the company 4A2E for two years. Throughout this period, her 
+                            commitment, determination and perseverance have allowed her to actively contribute to the development 
+                            of the graphic design and webmaster activities. Her journey reflects genuine professionalism and consistent 
+                            motivation in carrying out her responsibilities. »">
+                                « Voilà maintenant deux ans qu'Alexia évolue au sein de l'entreprise 4A2E.
+                                Au cours de cette période, elle a su, grâce à son implication, sa détermination et sa
+                                persévérance,
+                                contribuer activement au développement de l'activité infographie et webmaster. Son
+                                parcours témoigne
+                                d'un réel professionnalisme et d'une motivation constante dans la réalisation de ses
+                                missions. »
+                            </p>
+                        </div>
+
+                        <div class="temo-card">
+                            <div class="temo-header">
+                                <div>
+                                    <div class="temo-name">Valérie PIERRE-JOSEPH</div>
+                                    <div class="temo-role" data-fr="Directrice de l'AGLS" data-en="Director of AGLS">
+                                        Directrice de l'AGLS</div>
+                                </div>
+                                <i class="fas fa-quote-right temo-quote-icon"></i>
+                            </div>
+                            <div class="temo-sep"></div>
+                            <p class="temo-text"
+                                data-fr="« Alexia démontre un grand professionnalisme, alliant rigueur, sérieux, rapidité et écoute attentive des besoins du client. Elle fait preuve d'une grande pédagogie et respecte pleinement les attentes exprimées tout en apportant des recommandations pertinentes, même lorsque celles-ci ne sont pas retenues. »"
+                                data-en="« Alexia demonstrates great professionalism, combining rigor, seriousness, speed and careful attention to client needs. She shows great pedagogy and fully respects the expressed expectations while providing relevant recommendations, even when they are not retained. »">
+                                « Alexia démontre un grand professionnalisme, alliant rigueur, sérieux, rapidité et
+                                écoute attentive des besoins du client. Elle fait preuve d'une grande pédagogie et
+                                respecte pleinement les attentes exprimés tout en apportant des recommandations
+                                pertinentes, même lorsque celles-ci ne sont pas retenues.»
+                            </p>
+                        </div>
+
+                        <div class="temo-card">
+                            <div class="temo-header">
+                                <div>
+                                    <div class="temo-name">Francesca VINCENT</div>
+                                    <div class="temo-role" data-fr="Responsable de Jarry Business Center"
+                                        data-en="Manager of Jarry Business Center">Responsable de Jarry Business Center
+                                    </div>
+                                </div>
+                                <i class="fas fa-quote-right temo-quote-icon"></i>
+                            </div>
+                            <div class="temo-sep"></div>
+                            <p class="temo-text" data-fr="« Depuis son arrivée au sein de notre centre d’affaires, Alexia a démontré un grand
+                        professionnalisme, une implication exemplaire et une réelle maîtrise des outils de communication
+                        digitale. Grâce à son travail et à son investissement, notre centre d’affaires bénéficie aujourd’hui d’une
+                        communication plus moderne, cohérente et professionnelle. »"
+                                data-en="« Since joining our business center, Alexia has demonstrated 
+                        great professionalism, exemplary dedication, and a true mastery of digital communication tools. Thanks to her hard work and commitment, 
+                        our business center now benefits from more modern, consistent, and professional communication. »">
+                                « Depuis son arrivée au sein de notre centre d’affaires, Alexia a démontré un grand
+                                professionnalisme, une implication exemplaire et une réelle maîtrise des outils de
+                                communication
+                                digitale. Grâce à son travail et à son investissement, notre centre d’affaires bénéficie
+                                aujourd’hui d’une
+                                communication plus moderne, cohérente et professionnelle.»
+                            </p>
+                        </div>
+
+                        <div class="temo-card">
+                            <div class="temo-header">
+                                <div>
+                                    <div class="temo-name">Mohamed GAÏDI</div>
+                                    <div class="temo-role" data-fr="Directeur Général Antilles-Guyane"
+                                        data-en="General Manager, Antilles-Guyana">Directeur Général Antilles-Guyane
+                                    </div>
+                                </div>
+                                <i class="fas fa-quote-right temo-quote-icon"></i>
+                            </div>
+                            <div class="temo-sep"></div>
+                            <p class="temo-text" data-fr="«Mme WALTER a su faire preuve de créativité, conseil, réactivité et rapidité pour le
+                                rajeunissement de nos logos d'entreprises. Au plaisir de travailler prochainement sur de
+                                nouveaux projets aussi bien professionnels que personnels.»" data-en="« ... »">
+                                « Mme WALTER a su faire preuve de créativité, conseil, réactivité et rapidité pour le
+                                rajeunissement de nos logos d'entreprises. Au plaisir de travailler prochainement sur de
+                                nouveaux projets aussi bien professionnels que personnels.»
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="temo-arrows">
+                    <button class="temo-arrow" id="temoPrev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="temo-arrow" id="temoNext"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="temo-dots" id="temoDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-content">
+
+                <div class="footer-brand">
+                    <img src="IMAGES/LOGOS/logo-1.webp" id="footer-logo-img" alt="Logo WA" class="footer-logo">
+                    <div class="footer-socials">
+                        <a href="https://www.linkedin.com/in/walter-alexia-243b412a7/" class="footer-social-btn"
+                            target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/walter_asj/" class="footer-social-btn" target="_blank"
+                            rel="noopener" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Menu" data-en="Menu">Menu</h5>
+                    <ul>
+                        <li><a href="index.html" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                        <li><a href="index.html#apropos" data-fr="À propos" data-en="About">À propos</a></li>
+                        <li><a href="index.html#competences" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+                        <li><a href="index.html#projets" data-fr="Projets" data-en="Projects">Projets</a></li>
+                        <li><a href="index.html#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Légale" data-en="Legal">Légale</h5>
+                    <ul>
+                        <li><a href="mentions.html" data-fr="Mentions légales" data-en="Legal notices">Mentions
+                                légales</a></li>
+                        <li><a href="mentions.html" data-fr="Politique de confidentialité"
+                                data-en="Privacy policy">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 walter-alexia-butmmi.com — <a href="mentions.html" data-fr="Tous droits réservés"
+                        data-en="All rights reserved">Tous droits réservés</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // MENU BURGER
+        // =============================================
+        const burger = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('overlay');
+        const subBtn = document.getElementById('subBtn');
+        const subList = document.getElementById('subList');
+
+        function toggleMenu() {
+            burger.classList.toggle('open');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        subBtn.addEventListener('click', () => {
+            subBtn.classList.toggle('open');
+            subList.classList.toggle('open');
+        });
+
+        // =============================================
+        // BOUTON RETOUR EN HAUT
+        // =============================================
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        const sectionEntreprise = document.getElementById('entreprise');
+
+        window.addEventListener('scroll', () => {
+            const triggerY = sectionEntreprise.getBoundingClientRect().top + window.scrollY - 230;
+            scrollBtn.classList.toggle('visible', window.scrollY >= triggerY);
+        });
+
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // =============================================
+        // HAUTEUR PHOTO ENTREPRISE
+        // =============================================
+        function matchPhotoHeight() {
+            const card = document.querySelector('.entreprise-card');
+            const photo = document.getElementById('entreprisePhoto');
+            if (card && photo) photo.style.height = card.offsetHeight + 'px';
+        }
+        matchPhotoHeight();
+        window.addEventListener('resize', matchPhotoHeight);
+
+        // =============================================
+        // FILTRES
+        // =============================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const pill = document.getElementById('filterPill');
+        const allCards = document.querySelectorAll('.project-card');
+
+        function movePill(btn) {
+            pill.style.left = btn.offsetLeft + 'px';
+            pill.style.width = btn.offsetWidth + 'px';
+        }
+
+        setTimeout(() => movePill(document.querySelector('.filter-btn.active')), 50);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                movePill(btn);
+                const filter = btn.dataset.filter;
+                allCards.forEach(card => {
+                    card.classList.toggle('hidden', filter !== 'all' && card.dataset.category !== filter);
+                });
+                currentIndex = 0;
+                updateCarousel();
+            });
+        });
+
+        window.addEventListener('resize', () => movePill(document.querySelector('.filter-btn.active')));
+
+        // =============================================
+        // CAROUSEL PROJETS
+        // =============================================
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsWrap = document.getElementById('carouselDots');
+        let currentIndex = 0;
+
+        function getVisibleCards() {
+            return Array.from(allCards).filter(c => !c.classList.contains('hidden'));
+        }
+
+        function getCardsPerView() {
+            const w = window.innerWidth;
+            if (w < 600) return 1;
+            if (w < 900) return 2;
+            return 3;
+        }
+
+        function updateCarousel() {
+            const visible = getVisibleCards();
+            const perView = getCardsPerView();
+            const maxIndex = Math.max(0, visible.length - perView);
+            currentIndex = Math.min(Math.max(currentIndex, 0), maxIndex);
+
+            const firstCard = getVisibleCards()[0];
+            const cardWidth = firstCard ? firstCard.offsetWidth + 24 : 344;
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex >= maxIndex;
+
+            dotsWrap.innerHTML = '';
+            for (let i = 0; i <= maxIndex; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === currentIndex ? ' active' : '');
+                dot.addEventListener('click', () => { currentIndex = i; updateCarousel(); });
+                dotsWrap.appendChild(dot);
+            }
+        }
+
+        prevBtn.addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; updateCarousel(); } });
+        nextBtn.addEventListener('click', () => {
+            const maxIndex = Math.max(0, getVisibleCards().length - getCardsPerView());
+            if (currentIndex < maxIndex) { currentIndex++; updateCarousel(); }
+        });
+
+        window.addEventListener('resize', updateCarousel);
+        setTimeout(updateCarousel, 100);
+
+        // =============================================
+        // MODALE — avec ou sans avant/après selon data-img-after
+        // =============================================
+        const altModalOverlay = document.getElementById('altModalOverlay');
+        const altModalTitle = document.getElementById('altModalTitle');
+        const altModalDesc = document.getElementById('altModalDesc');
+        const altModalTags = document.getElementById('altModalTags');
+        const altModalImgWrap = document.getElementById('altModalImgWrap');
+        const altModalClose = document.getElementById('altModalClose');
+        const altModalLink = document.getElementById('altModalLink');
+
+        function openModal(card) {
+            const lang = document.documentElement.lang || 'fr';
+
+            // Titre et description selon la langue
+            altModalTitle.textContent = lang === 'en'
+                ? (card.dataset.titleEn || card.dataset.titleFr)
+                : card.dataset.titleFr;
+
+            altModalDesc.textContent = lang === 'en'
+                ? (card.dataset.descEn || card.dataset.descFr)
+                : card.dataset.descFr;
+
+            // Tags
+            altModalTags.innerHTML = '';
+            card.dataset.tags.split(',').forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'modal-tag';
+                span.textContent = tag.trim();
+                altModalTags.appendChild(span);
+            });
+
+            // Lien
+            const link = card.dataset.link;
+            if (link && link !== '#') {
+                altModalLink.href = link;
+                altModalLink.style.display = 'inline-flex';
+            } else {
+                altModalLink.style.display = 'none';
+            }
+
+            const beforeSrc = card.dataset.imgBefore;
+            const afterSrc = card.dataset.imgAfter;
+            const hasAfter = afterSrc !== undefined && afterSrc !== '';
+
+            const labelBefore = lang === 'en' ? 'Before' : 'Avant';
+            const labelAfter = lang === 'en' ? 'After' : 'Après';
+            const labelEmpty = lang === 'en' ? 'Image not available' : 'Image du projet';
+
+            if (hasAfter) {
+                // Mode avant/après
+                altModalImgWrap.innerHTML = `
+                    <div class="modal-img-wrap">
+                        ${beforeSrc
+                        ? `<img src="${beforeSrc}" class="modal-img before-img" alt="${labelBefore}">`
+                        : `<div class="modal-img-placeholder before-img">${labelBefore}</div>`}
+                        ${afterSrc
+                        ? `<img src="${afterSrc}" class="modal-img after-img" style="display:none" alt="${labelAfter}">`
+                        : `<div class="modal-img-placeholder after-img" style="display:none">${labelAfter}</div>`}
+                        <div class="before-after-toggle">
+                            <span class="ba-label ba-before" style="color:#fff">${labelBefore}</span>
+                            <div class="ba-switch" id="baSwitch"><div class="ba-thumb"></div></div>
+                            <span class="ba-label ba-after" style="color:rgba(255,255,255,0.5)">${labelAfter}</span>
+                        </div>
+                    </div>`;
+
+                const baSwitch = document.getElementById('baSwitch');
+                const beforeEl = altModalImgWrap.querySelector('.before-img');
+                const afterEl = altModalImgWrap.querySelector('.after-img');
+                const baBeforeLabel = altModalImgWrap.querySelector('.ba-before');
+                const baAfterLabel = altModalImgWrap.querySelector('.ba-after');
+                let isAfter = false;
+
+                baSwitch.addEventListener('click', () => {
+                    isAfter = !isAfter;
+                    baSwitch.classList.toggle('active', isAfter);
+                    beforeEl.style.display = isAfter ? 'none' : 'flex';
+                    afterEl.style.display = isAfter ? 'flex' : 'none';
+                    baBeforeLabel.style.color = isAfter ? 'rgba(255,255,255,0.5)' : '#fff';
+                    baAfterLabel.style.color = isAfter ? '#fff' : 'rgba(255,255,255,0.5)';
+                });
+
+            } else {
+                // Mode image simple
+                const cardImg = card.querySelector('.card-img');
+                altModalImgWrap.innerHTML = cardImg
+                    ? `<img src="${cardImg.src}" alt="${cardImg.alt}" style="width:100%;height:100%;object-fit:cover;">`
+                    : `<div class="modal-img-placeholder">${labelEmpty}</div>`;
+            }
+
+            altModalOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        allCards.forEach(card => card.addEventListener('click', () => openModal(card)));
+
+        function closeAltModal() {
+            altModalOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        altModalClose.addEventListener('click', closeAltModal);
+        altModalOverlay.addEventListener('click', e => { if (e.target === altModalOverlay) closeAltModal(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeAltModal();
+        });
+
+        // =============================================
+        // CAROUSEL TÉMOIGNAGES
+        // =============================================
+        const temoTrack = document.getElementById('temoTrack');
+        const temoPrevBtn = document.getElementById('temoPrev');
+        const temoNextBtn = document.getElementById('temoNext');
+        const temoDotsWrap = document.getElementById('temoDots');
+        const temoCards = document.querySelectorAll('.temo-card');
+        let temoCurrent = 0;
+
+        function temoGetPerView() {
+            const w = window.innerWidth;
+            if (w < 600) return 1;
+            if (w < 900) return 2;
+            return 3;
+        }
+
+        function temoUpdate() {
+            const perView = temoGetPerView();
+            const max = Math.max(0, temoCards.length - perView);
+            temoCurrent = Math.min(Math.max(temoCurrent, 0), max);
+
+            const firstTemo = temoCards[0];
+            const cardWidth = firstTemo ? firstTemo.offsetWidth + 24 : 364;
+            temoTrack.style.transform = `translateX(-${temoCurrent * cardWidth}px)`;
+
+            temoPrevBtn.disabled = temoCurrent === 0;
+            temoNextBtn.disabled = temoCurrent >= max;
+
+            temoDotsWrap.innerHTML = '';
+            for (let i = 0; i <= max; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'temo-dot' + (i === temoCurrent ? ' active' : '');
+                dot.addEventListener('click', () => { temoCurrent = i; temoUpdate(); });
+                temoDotsWrap.appendChild(dot);
+            }
+        }
+
+        temoPrevBtn.addEventListener('click', () => { if (temoCurrent > 0) { temoCurrent--; temoUpdate(); } });
+        temoNextBtn.addEventListener('click', () => {
+            const max = Math.max(0, temoCards.length - temoGetPerView());
+            if (temoCurrent < max) { temoCurrent++; temoUpdate(); }
+        });
+
+        window.addEventListener('resize', temoUpdate);
+        setTimeout(temoUpdate, 50);
+
+        // =============================================
+        // PANNEAU ACCESSIBILITÉ
+        // =============================================
+        const btnAccess = document.getElementById('btn-access');
+        const panel = document.getElementById('access-panel');
+
+        btnAccess.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.toggle('open');
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') panel.classList.remove('open');
+        });
+
+        // =============================================
+        // LANGUE
+        // =============================================
+        function applyLangToDOM(lang) {
+            document.querySelectorAll('[data-fr]').forEach(el => {
+                const val = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+                if (val !== undefined) el.textContent = val;
+            });
+            document.documentElement.lang = lang;
+        }
+
+        function setLang(lang) {
+            document.getElementById('langFR').classList.toggle('active', lang === 'fr');
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+            applyLangToDOM(lang);
+            updateThemeLabel(lang);
+            localStorage.setItem('lang', lang);
+        }
+
+        // =============================================
+        // VOICEOVER
+        // =============================================
+        let isReading = false;
+
+        const voiceTexts = {
+            fr: "Bienvenue sur la page alternance d'Alexia Walter. Découvrez son expérience chez 4A2E, ses missions et ses réalisations en tant qu'infographiste, web-designer et community manager.",
+            en: "Welcome to Alexia Walter's internship page. Discover her experience at 4A2E, her missions and achievements as a graphic designer, web designer and community manager."
+        };
+
+        function playVoice(lang) {
+            const indicator = document.getElementById('reading-indicator');
+            const voiceBtnFR = document.getElementById('voiceFR');
+            const voiceBtnEN = document.getElementById('voiceEN');
+
+            if (isReading) {
+                window.speechSynthesis.cancel();
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(voiceTexts[lang]);
+            utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+            utterance.rate = 0.95;
+
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(v => v.lang.startsWith(lang === 'fr' ? 'fr' : 'en'));
+            if (voice) utterance.voice = voice;
+
+            utterance.onend = () => {
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+            };
+
+            window.speechSynthesis.speak(utterance);
+            isReading = true;
+            indicator.classList.add('show');
+            if (lang === 'fr') voiceBtnFR.classList.add('active');
+            else voiceBtnEN.classList.add('active');
+        }
+
+        window.speechSynthesis.getVoices();
+
+        // =============================================
+        // MODE CLAIR / SOMBRE
+        // =============================================
+        const btnTheme = document.getElementById('btn-theme');
+        const themeLabel = document.getElementById('theme-label');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateThemeLabel(lang) {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            if (isLight) {
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = lang === 'en' ? 'Dark mode' : 'Mode sombre';
+            } else {
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = lang === 'en' ? 'Light mode' : 'Mode clair';
+            }
+        }
+
+        function setDark(dark) {
+            const lang = document.documentElement.lang || 'fr';
+            if (dark) {
+                document.documentElement.classList.remove('light-mode');
+                document.body.classList.remove('light');
+                btnTheme.classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+                // Logo et bannière mode sombre
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                document.body.classList.add('light');
+                btnTheme.classList.add('active');
+                localStorage.setItem('theme', 'light');
+                // Logo et bannière mode clair
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+            }
+            updateThemeLabel(lang);
+        }
+
+        btnTheme.addEventListener('click', () => setDark(document.documentElement.classList.contains('light-mode')));
+
+        // =============================================
+        // INITIALISATION
+        // =============================================
+        (function init() {
+            setDark(localStorage.getItem('theme') !== 'light');
+            setLang(localStorage.getItem('lang') || 'fr');
+        })();
+    </script>
+
+</body>
+
+</html>

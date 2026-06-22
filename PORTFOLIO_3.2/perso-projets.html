@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projets - Personnels</title>
+
+    <!-- ANTI-FLASH -->
+    <script>
+        (function () {
+            if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+
+    <link rel="stylesheet" href="perso-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Bouton retour en haut -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Bouton accessibilité -->
+    <button id="btn-access" aria-label="Options d'accessibilité">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Panneau accessibilité -->
+    <div id="access-panel" role="dialog" aria-label="Options d'accessibilité">
+        <div class="panel-title" data-fr="Paramètres" data-en="Settings">Paramètres</div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-globe"></i>
+                <span data-fr="Langue" data-en="Language">Langue</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn active" id="langFR" onclick="setLang('fr')">FR</button>
+                <button class="lang-btn" id="langEN" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-volume-up"></i>
+                <span data-fr="Lecture vocale" data-en="Voice reading">Lecture vocale</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn" id="voiceFR" onclick="playVoice('fr')">FR</button>
+                <button class="lang-btn" id="voiceEN" onclick="playVoice('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="reading-indicator" id="reading-indicator">
+            <div class="reading-dot"></div>
+            <span data-fr="Lecture en cours…" data-en="Reading in progress…">Lecture en cours…</span>
+        </div>
+
+        <button class="access-btn" id="btn-theme">
+            <i class="fas fa-sun" id="theme-icon"></i>
+            <span id="theme-label">Mode clair</span>
+        </button>
+    </div>
+
+    <!-- Overlay menu mobile -->
+    <div class="mobile-overlay" id="overlay"></div>
+
+    <!-- NAVBAR -->
+    <nav class="custom-nav">
+        <div class="nav-inner">
+
+            <a class="navbar-brand" href="index.html">
+                <img id="logo-img" src="IMAGES/LOGOS/logo-1.webp" alt="Logo WA">
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                <li><a href="index.html#apropos" class="nav-link" data-fr="À propos" data-en="About">À propos</a></li>
+                <li><a href="index.html#competences" class="nav-link" data-fr="Compétences"
+                        data-en="Skills">Compétences</a></li>
+                <li class="has-dropdown">
+                    <a href="#" class="nav-link active">
+                        <span data-fr="Projets" data-en="Projects">Projets</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en
+                                MMI</a></li>
+                        <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a>
+                        </li>
+                        <li><a href="perso-projets.html" class="active" data-fr="Projets Personnels"
+                                data-en="Personal Projects">Projets Personnels</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="index.html#contact" class="nav-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+
+            <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+            <li><a href="index.html#apropos" class="mobile-link" data-fr="À propos" data-en="About">À propos</a></li>
+            <li><a href="index.html#competences" class="mobile-link" data-fr="Compétences"
+                    data-en="Skills">Compétences</a></li>
+            <li>
+                <button class="mobile-sub-btn" id="subBtn">
+                    <span data-fr="Projets" data-en="Projects">Projets</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="mobile-sub-list" id="subList">
+                    <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en MMI</a>
+                    </li>
+                    <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a></li>
+                    <li><a href="perso-projets.html" data-fr="Projets Personnels" data-en="Personal Projects">Projets
+                            Personnels</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="mobile-sep"></div>
+        <a href="index.html#contact" class="mobile-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+    </div>
+
+    <!-- BANNIÈRE -->
+    <section class="banner">
+        <div class="banner-content"></div>
+    </section>
+
+    <!-- PROJETS -->
+    <section class="projects-section" id="projets">
+        <div class="projects-wrapper">
+
+            <h2 class="projects-title" data-fr="Mes projets" data-en="My Projects">Mes projets</h2>
+
+            <!-- Filtres -->
+            <div class="filters-wrap">
+                <div class="filters-bar" id="filterBarPP">
+                    <div class="filter-pill" id="filterPillPP"></div>
+                    <button class="filter-btn-pp active" data-filter="all" data-fr="Tout" data-en="All">Tout</button>
+                    <button class="filter-btn-pp" data-filter="visuel" data-fr="Visuels"
+                        data-en="Visuals">Visuels</button>
+                    <button class="filter-btn-pp" data-filter="video" data-fr="Vidéos" data-en="Videos">Vidéos</button>
+                    <button class="filter-btn-pp" data-filter="photo" data-fr="Photos" data-en="Photos">Photos</button>
+                </div>
+            </div>
+
+            <!-- Grille -->
+            <div class="projects-grid" id="projectsGridPP">
+
+                <!--VISUELS-->
+                <!--Mustang-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/VISUEL/MUSTANG_AFFICHE_VF4.webp"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/VISUEL/MUSTANG_AFFICHE_VF4.webp" alt="Affiche Mustang" class="card-img">
+                </a>
+                <!--Moto-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/VISUEL/POST-MOTO-JUJU-1.jpg"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/VISUEL/POST-MOTO-JUJU-1.jpg" alt="Affiche Moto Yamaha" class="card-img">
+                </a>
+
+                <!--Canette-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/VISUEL/POST-CANETTE-1.jpg"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/VISUEL/POST-CANETTE-1.jpg" alt="Visuel jus de raisin" class="card-img">
+                </a>
+
+                <!--Glace-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/VISUEL/POST_GLACE.webp" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/VISUEL/POST_GLACE.webp" alt="Visuel jus de raisin" class="card-img">
+                </a>
+
+                <!--Summers-->
+                <a class="project-card-pp" data-category="visuel"
+                    href="https://www.wattpad.com/story/408412090?utm_source=ios&utm_medium=link&utm_content=share_reading&wp_page=home&wp_uname=SashaA276"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/VISUEL/cover-summers.webp" alt="Visuel jus de raisin" class="card-img">
+                </a>
+
+                <!--T-shirt-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/VISUEL/cover-trs-tshirt-2.webp"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/VISUEL/cover-trs-tshirt-2.webp" alt="T-shirt Tap Rack Shooting" class="card-img">
+                </a>
+
+                <!--Logo trs-->
+                <a class="project-card-pp" data-category="visuel" href="IMAGES/LOGOS/cover-trs-logo-1.webp"
+                    target="_blank" rel="noopener">
+                    <img src="IMAGES/LOGOS/cover-trs-logo-1.webp" alt="Logo Tap Rack Shooting" class="card-img">
+                </a>
+
+                <!--VIDÉOS-->
+                <!--Acapi-->
+                <a class="project-card-pp" data-category="video" href="https://youtu.be/DZGXH-QetLo" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/VISUEL/cover-acapi.webp" alt="Vidéo Black Beard Trophy" class="card-img">
+                </a>
+
+                <!--PHOTOS-->
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-1.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-1.JPG" alt="Photo ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-2.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-2.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-3.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-3.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-4.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-4.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-5.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-5.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-6.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-6.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-7.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-7.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-8.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-8.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-9.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-9.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+
+                <a class="project-card-pp" data-category="photo" href="IMAGES/PHOTO/photo-10.JPG" target="_blank"
+                    rel="noopener">
+                    <img src="IMAGES/PHOTO/photo-10.JPG" alt="hoto ACAPI" class="card-img">
+                </a>
+                
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-content">
+
+                <div class="footer-brand">
+                    <img src="IMAGES/LOGOS/logo-1.webp" id="footer-logo-img" alt="Logo WA" class="footer-logo">
+                    <div class="footer-socials">
+                        <a href="https://www.linkedin.com/in/walter-alexia-243b412a7/" class="footer-social-btn"
+                            target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/walter_asj/" class="footer-social-btn" target="_blank"
+                            rel="noopener" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Menu" data-en="Menu">Menu</h5>
+                    <ul>
+                        <li><a href="index.html" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                        <li><a href="index.html#apropos" data-fr="À propos" data-en="About">À propos</a></li>
+                        <li><a href="index.html#competences" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+                        <li><a href="index.html#projets" data-fr="Projets" data-en="Projects">Projets</a></li>
+                        <li><a href="index.html#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Légale" data-en="Legal">Légale</h5>
+                    <ul>
+                        <li><a href="mentions.html" data-fr="Mentions légales" data-en="Legal notices">Mentions
+                                légales</a></li>
+                        <li><a href="mentions.html" data-fr="Politique de confidentialité"
+                                data-en="Privacy policy">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 walter-alexia-butmmi.com — <a href="mentions.html" data-fr="Tous droits réservés"
+                        data-en="All rights reserved">Tous droits réservés</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // MENU BURGER
+        // =============================================
+        const burger = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('overlay');
+        const subBtn = document.getElementById('subBtn');
+        const subList = document.getElementById('subList');
+
+        function toggleMenu() {
+            burger.classList.toggle('open');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        subBtn.addEventListener('click', () => {
+            subBtn.classList.toggle('open');
+            subList.classList.toggle('open');
+        });
+
+        // =============================================
+        // BOUTON RETOUR EN HAUT
+        // =============================================
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        const sectionProjets = document.getElementById('projets');
+
+        window.addEventListener('scroll', () => {
+            const triggerY = sectionProjets.getBoundingClientRect().top + window.scrollY - 230;
+            scrollBtn.classList.toggle('visible', window.scrollY >= triggerY);
+        });
+
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // =============================================
+        // FILTRES
+        // =============================================
+        const filterBtnsPP = document.querySelectorAll('.filter-btn-pp');
+        const pillPP = document.getElementById('filterPillPP');
+        const cardsPP = document.querySelectorAll('.project-card-pp');
+
+        function movePillPP(btn) {
+            pillPP.style.left = btn.offsetLeft + 'px';
+            pillPP.style.width = btn.offsetWidth + 'px';
+        }
+
+        setTimeout(() => movePillPP(document.querySelector('.filter-btn-pp.active')), 50);
+
+        filterBtnsPP.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtnsPP.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                movePillPP(btn);
+                const filter = btn.dataset.filter;
+                cardsPP.forEach(card => {
+                    card.classList.toggle('hidden', filter !== 'all' && card.dataset.category !== filter);
+                });
+            });
+        });
+
+        window.addEventListener('resize', () => movePillPP(document.querySelector('.filter-btn-pp.active')));
+
+        // =============================================
+        // PANNEAU ACCESSIBILITÉ
+        // =============================================
+        const btnAccess = document.getElementById('btn-access');
+        const panel = document.getElementById('access-panel');
+
+        btnAccess.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.toggle('open');
+        });
+
+        document.addEventListener('click', e => {
+            if (!panel.contains(e.target) && e.target !== btnAccess) {
+                panel.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') panel.classList.remove('open');
+        });
+
+        // =============================================
+        // LANGUE
+        // =============================================
+        function applyLangToDOM(lang) {
+            document.querySelectorAll('[data-fr]').forEach(el => {
+                const val = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+                if (val !== undefined) el.textContent = val;
+            });
+            document.documentElement.lang = lang;
+        }
+
+        function setLang(lang) {
+            document.getElementById('langFR').classList.toggle('active', lang === 'fr');
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+            applyLangToDOM(lang);
+            updateThemeLabel(lang);
+            localStorage.setItem('lang', lang);
+        }
+
+        // =============================================
+        // VOICEOVER
+        // =============================================
+        let isReading = false;
+
+        const voiceTexts = {
+            fr: "Bienvenue sur la page des projets personnels d'Alexia Walter. Découvrez ses créations personnelles en matière d'affiches, flyers, vidéos et photographie.",
+            en: "Welcome to Alexia Walter's personal projects page. Discover her personal creations in posters, flyers, videos and photography."
+        };
+
+        function playVoice(lang) {
+            const indicator = document.getElementById('reading-indicator');
+            const voiceBtnFR = document.getElementById('voiceFR');
+            const voiceBtnEN = document.getElementById('voiceEN');
+
+            if (isReading) {
+                window.speechSynthesis.cancel();
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(voiceTexts[lang]);
+            utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+            utterance.rate = 0.95;
+
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(v => v.lang.startsWith(lang === 'fr' ? 'fr' : 'en'));
+            if (voice) utterance.voice = voice;
+
+            utterance.onend = () => {
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+            };
+
+            window.speechSynthesis.speak(utterance);
+            isReading = true;
+            indicator.classList.add('show');
+            if (lang === 'fr') voiceBtnFR.classList.add('active');
+            else voiceBtnEN.classList.add('active');
+        }
+
+        window.speechSynthesis.getVoices();
+
+        // =============================================
+        // MODE CLAIR / SOMBRE
+        // =============================================
+        const btnTheme = document.getElementById('btn-theme');
+        const themeLabel = document.getElementById('theme-label');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateThemeLabel(lang) {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            if (isLight) {
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = lang === 'en' ? 'Dark mode' : 'Mode sombre';
+            } else {
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = lang === 'en' ? 'Light mode' : 'Mode clair';
+            }
+        }
+
+        function setDark(dark) {
+            const lang = document.documentElement.lang || 'fr';
+            if (dark) {
+                document.documentElement.classList.remove('light-mode');
+                document.body.classList.remove('light');
+                btnTheme.classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                document.body.classList.add('light');
+                btnTheme.classList.add('active');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+            }
+            updateThemeLabel(lang);
+        }
+
+        btnTheme.addEventListener('click', () => setDark(document.documentElement.classList.contains('light-mode')));
+
+        // =============================================
+        // INITIALISATION
+        // =============================================
+        (function init() {
+            setDark(localStorage.getItem('theme') !== 'light');
+            setLang(localStorage.getItem('lang') || 'fr');
+        })();
+    </script>
+
+</body>
+
+</html>

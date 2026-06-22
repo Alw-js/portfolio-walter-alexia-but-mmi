@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projets - MMI</title>
+
+    <!-- ✅ ANTI-FLASH : doit être AVANT tout le reste -->
+    <script>
+        (function () {
+            var theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="mmi-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!--BOUTON POUR REVENIR EN HAUT-->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Bouton accessibilité -->
+    <button id="btn-access" aria-label="Options d'accessibilité">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Panneau accessibilité -->
+    <div id="access-panel" role="dialog" aria-label="Options d'accessibilité">
+        <div class="panel-title" data-fr="Paramètres" data-en="Settings">Paramètres</div>
+
+        <!-- Langue -->
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-globe"></i>
+                <span data-fr="Langue" data-en="Language">Langue</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn active" id="langFR" onclick="setLang('fr')">FR</button>
+                <button class="lang-btn" id="langEN" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+
+        <!-- Voiceover -->
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-volume-up"></i>
+                <span data-fr="Lecture vocale" data-en="Voice reading">Lecture vocale</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn" id="voiceFR" onclick="playVoice('fr')">FR</button>
+                <button class="lang-btn" id="voiceEN" onclick="playVoice('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="reading-indicator" id="reading-indicator">
+            <div class="reading-dot"></div>
+            <span data-fr="Lecture en cours…" data-en="Reading in progress…">Lecture en cours…</span>
+        </div>
+
+        <!-- Mode clair/sombre -->
+        <button class="access-btn" id="btn-theme">
+            <i class="fas fa-sun" id="theme-icon"></i>
+            <span id="theme-label">Mode clair</span>
+        </button>
+    </div>
+
+    <!-- Overlay menu mobile -->
+    <div class="mobile-overlay" id="overlay"></div>
+
+    <!-- NAVBAR -->
+    <nav class="custom-nav">
+        <div class="nav-inner">
+
+            <a class="navbar-brand" href="index.html">
+                <img id="logo-img" src="IMAGES/LOGOS/logo-1.webp" alt="Logo WA">
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                <li><a href="index.html#apropos" class="nav-link" data-fr="À propos" data-en="About">À propos</a></li>
+                <li><a href="index.html#competences" class="nav-link" data-fr="Compétences"
+                        data-en="Skills">Compétences</a></li>
+                <li class="has-dropdown">
+                    <a href="#" class="nav-link active">
+                        <span data-fr="Projets" data-en="Projects">Projets</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="mmi-projets.html" class="active" data-fr="Projets en MMI"
+                                data-en="MMI Projects">Projets en MMI</a></li>
+                        <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a>
+                        </li>
+                        <li><a href="perso-projets.html" data-fr="Projets Personnels"
+                                data-en="Personal Projects">Projets Personnels</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="index.html#contact" class="nav-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+
+            <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-link" data-fr="Accueil" data-en="Home">Accueil</a></li>
+            <li><a href="index.html#apropos" class="mobile-link" data-fr="À propos" data-en="About">À propos</a></li>
+            <li><a href="index.html#competences" class="mobile-link" data-fr="Compétences"
+                    data-en="Skills">Compétences</a></li>
+            <li>
+                <button class="mobile-sub-btn" id="subBtn">
+                    <span data-fr="Projets" data-en="Projects">Projets</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="mobile-sub-list" id="subList">
+                    <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en MMI</a>
+                    </li>
+                    <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a></li>
+                    <li><a href="perso-projets.html" data-fr="Projets Personnels" data-en="Personal Projects">Projets
+                            Personnels</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="mobile-sep"></div>
+        <a href="index.html#contact" class="mobile-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+    </div>
+
+    <!-- BANNIÈRE -->
+    <section class="banner">
+        <div class="banner-content"></div>
+    </section>
+
+    <!-- PROJETS -->
+    <section class="projects-section" id="projet-mmi">
+        <div class="projects-wrapper">
+
+            <h2 class="projects-title" data-fr="Mes Réalisations" data-en="My Work">Mes Réalisations</h2>
+
+            <div class="filters-wrap">
+                <div class="filters-bar" id="filtersBar">
+                    <div class="filter-pill" id="filterPill"></div>
+                    <button class="filter-btn active" data-filter="all" data-fr="Tout" data-en="All">Tout</button>
+                    <button class="filter-btn" data-filter="ue1" data-fr="UE EXPRIMER" data-en="UE EXPRESS">UE
+                        EXPRIMER</button>
+                    <button class="filter-btn" data-filter="ue2" data-fr="UE CONCEVOIR" data-en="UE DESIGN">UE
+                        CONCEVOIR</button>
+                    <button class="filter-btn" data-filter="ue5" data-fr="UE COMPRENDRE" data-en="UE UNDERSTAND">UE
+                        COMPRENDRE</button>
+                    <button class="filter-btn" data-filter="ue3" data-fr="UE DÉVELOPPER" data-en="UE DEVELOP">UE
+                        DÉVELOPPER</button>
+                    <button class="filter-btn" data-filter="ue4" data-fr="UE ENTREPRENDRE" data-en="UE ENTREPRENEUR">UE
+                        ENTREPRENDRE</button>
+
+                </div>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+
+                <!-- UE DÉVELOPPER -->
+                <!--PORTFOLIO 1-->
+                <div class="project-card" data-category="ue3" data-title-fr="Portfolio MMI 1"
+                    data-title-en="MMI Portfolio 1" data-desc-fr="Conception de mon portfolio en première année de BUT MMI, développé à l'aide du CMS Odoo. 
+                    Ce projet avait pour but de présenter les différents projets réalisés en formation. Il m'a permis de découvrir pour la première fois l'utilisation 
+                    d'un CMS et les différents outils qu'il propose, tout en définissant ma direction artistique."
+                    data-desc-en="Design of my portfolio in the first year of my BUT MMI degree, built using the Odoo CMS. This project aimed to 
+                    showcase the various works completed during my training. It allowed me to discover, for the first time, the use of a content management
+                    system and the tools it offers, while defining my artistic direction." data-tags="CMS,Odoo"
+                    data-link="https://walter-alexia-butmmi.odoo.com/">
+                    <img src="IMAGES/VISUEL/cover-portfolio-1.webp" alt="Portfolio MMI 1" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Portfolio MMI 1" data-en="MMI Portfolio 1">Portfolio MMI 1
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">CMS</span>
+                            <span class="card-tag">Odoo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--PORTFOLIO 2-->
+                <div class="project-card" data-category="ue3" data-title-fr="Portfolio MMI 2"
+                    data-title-en="MMI Portfolio 2"
+                    data-desc-fr="Conception de mon portfolio en deuxième année de BUT MMI, développé en HTML, CSS et JavaScript. Ce projet m'a permis de 
+                    renforcer mes compétences en développement web et de découvrir de nouveaux outils tels que Bootstrap et Formbutton pour les formulaires de contact. 
+                    J'ai opté pour une approche simple qui m'a permis d'améliorer ma direction artistique, tout en développant mon intérêt pour le codage."
+                    data-desc-en="Design of my portfolio in the second year of my BUT MMI degree, developed in HTML, CSS and JavaScript. This project allowed me 
+                    to strengthen my web development skills and discover new tools such as Bootstrap and Formbutton for contact forms. I opted for a clean approach that 
+                    helped me refine my artistic direction, while deepening my interest in coding."
+                    data-tags="HTML,CSS,JS" data-link="https://alw-js.github.io/walter-alexia-but-mmi/index.html">
+                    <img src="IMAGES/VISUEL/cover-portfolio-2.webp" alt="Portfolio MMI 2" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Portfolio MMI 2" data-en="MMI Portfolio 2">Portfolio MMI 2
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">HTML</span>
+                            <span class="card-tag">CSS</span>
+                            <span class="card-tag">JS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--PORTFOLIO 3-->
+                <div class="project-card" data-category="ue3" data-title-fr="Portfolio MMI 3"
+                    data-title-en="MMI Portfolio 3"
+                    data-desc-fr="Conception de mon portfolio de troisième année, développé en HTML, CSS et JavaScript. Ce projet m'a permis d'approfondir 
+                    mes compétences en programmation et de découvrir de nouveaux outils, dont l'IA Claude. J'y ai également pleinement défini ma direction artistique, 
+                    façonnée et affinée au fil de ces trois années de formation. Ce portfolio me représente fidèlement, avec mon propre style."
+                    data-desc-en="Design of my third-year portfolio, developed in HTML, CSS and JavaScript. This project allowed me to deepen my programming skills
+                    and discover new tools, including Claude AI. I also fully defined my artistic direction, shaped and refined throughout these three years of training. 
+                    This portfolio truly represents me, with my own style." data-tags="HTML,CSS,JS" data-link="">
+                    <img src="IMAGES/VISUEL/cover-portfolio-3.webp" alt="Portfolio MMI 3" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Portfolio MMI 3" data-en="MMI Portfolio 3">Portfolio MMI 3
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">HTML</span>
+                            <span class="card-tag">CSS</span>
+                            <span class="card-tag">JS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--AGENCE GNA-->
+                <div class="project-card" data-category="ue3" data-title-fr="Agence de voyage GNA"
+                    data-title-en="GNA Travel Agency" data-desc-fr="Réalisation en première année d'un site web fictif pour une agence de voyage touristique, en collaboration avec mon groupe. 
+                    Je me suis chargée de la partie maquette et design du site, conçu autour de la destination des îles Seychelles et de ses activités. Ce projet 
+                    m'a permis de découvrir Figma pour la réalisation de maquettes web." data-desc-en="Created during my first year as part of a group project, this fictional website was designed for a tourist travel agency. 
+                    I was responsible for the mockup and design, built around the Seychelles islands and their activities. This project introduced me to Figma 
+                    for web mockup design." data-tags="HTML,CSS,Web" data-team="PAPALIA Guillaume, MARENEL Noémie"
+                    data-link="https://4a2e.com">
+                    <img src="IMAGES/VISUEL/cover-gna.webp" alt="Agence de voyage GNA" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Agence de voyage GNA" data-en="GNA Travel Agency">Agence de
+                            voyage GNA</div>
+                        <div class="card-tags">
+                            <span class="card-tag">HTML</span>
+                            <span class="card-tag">CSS</span>
+                            <span class="card-tag">JS</span>
+                            <span class="card-tag">Figma</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--CAPRI'CHEESE-->
+                <div class="project-card" data-category="ue3" data-title-fr="CAPRI'CHEESE" data-title-en="CAPRI'CHEESE"
+                    data-desc-fr="Dans le cadre de ce projet, ma camarade et moi avons pris en charge l'ensemble du marketing et de la communication pour Nahuel Tournebize, 
+                    étudiante en 5e année d'ingénieur en agronomie et agro-industrie, et entrepreneuse à l'origine de Capr'îles. Son objectif : établir un élevage caprin en 
+                    Guadeloupe pour répondre à la demande croissante en lait et fromage sur l'île. Nous avons ainsi mis en place une campagne de communication et une stratégie 
+                    marketing complète afin de promouvoir ses produits, aussi bien localement qu'à l'international."
+                    data-desc-en="As part of this project, my classmate and I took charge of all marketing and communication for Nahuel Tournebize, a 5th-year engineering student 
+                    in agronomy and agro-industry, and entrepreneur behind Capr'îles. Her goal: to establish a goat farm in Guadeloupe to meet the growing demand for milk and cheese
+                    on the island. We developed a full communication campaign and marketing strategy to promote her products, both locally and internationally."
+                    data-tags="CMS,Webador,Figma" data-team="SABAN Kériane"
+                    data-link="https://gratuit-5109606.webadorsite.com/">
+                    <img src="IMAGES/VISUEL/cover-capricheese.webp" alt="Capri'Chesse" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Capri'Chesse" data-en="Capri'Chesse">Capri'Chesse</div>
+                        <div class="card-tags">
+                            <span class="card-tag">CMS</span>
+                            <span class="card-tag">Webador</span>
+                            <span class="card-tag">Figma</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UE EXPRIMER -->
+                <!--DOCUMENTAIRE-->
+                <div class="project-card" data-category="ue1" data-title-fr="Un ancien plongeur démineur"
+                    data-title-en="A former navy diver" data-desc-fr="J'ai réalisé un documentaire personnel retraçant l'histoire de mon père. À travers ce film, j'ai voulu lui donner 
+                    la parole pour qu'il 
+                    raconte son parcours, ce qu'il a vécu, traversé et enduré. Un projet intime qui m'a permis de mieux comprendre qui il est vraiment, et pourquoi il est 
+                    l'homme qu'il est aujourd'hui."
+                    data-desc-en="I directed a personal documentary tracing my father's story. Through this film, I gave him the floor to tell his journey — what he lived 
+                    through, experienced and endured. An intimate project that allowed me to better understand who he truly is, and why he became the man he is today."
+                    data-tags="Documentaire" data-link="https://youtu.be/3n976WVHCCM">
+                    <img src="IMAGES/VISUEL/cover-documentaire-2.webp" alt="Documentaire" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Un ancien plongeur démineur" data-en="A former navy diver">Un
+                            ancien plongeur démineur
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Documentaire</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--OBSESSION-->
+                <div class="project-card" data-category="ue1" data-title-fr="Obsession" data-title-en="Obsession"
+                    data-desc-fr="J'ai réalisé un court-métrage à partir de rushes fournis par mon professeur. Ce film aborde la violence conjugale psychologique sous deux angles : 
+                    une femme harcelée dans son environnement professionnel, qui subit également le comportement possessif et violent de son mari. Un sujet difficile traité avec 
+                    sensibilité, mettant en lumière une réalité trop souvent silencieuse." data-desc-en="I directed a short film using existing footage provided by my professor. The film addresses psychological domestic violence from two angles: a woman 
+                    harassed in her professional environment, who also endures the possessive and violent behavior of her husband. A difficult subject handled with sensitivity, shedding 
+                    light on a reality that is too often kept silent." data-tags="Court-métrage"
+                    data-link="https://youtu.be/xx7bELpJh8U">
+                    <img src="IMAGES/VISUEL/cover-obsession.webp" alt="Court-métrage" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Obsession" data-en="Obsession">Obsession
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Court-métrage</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--TRICHERIE-->
+                <div class="project-card" data-category="ue1" data-title-fr="Tricherie" data-title-en="Cheating"
+                    data-desc-fr="Avec ma classe, nous avons joué, filmé et monté une fiction sans dialogue mettant en scène des élèves qui trichent lors d'une évaluation. 
+                    Le lendemain, ils découvrent avec incompréhension qu'ils ont tous obtenu la note de zéro. Un exercice collectif et ludique qui nous a permis de travailler 
+                    la narration visuelle sans recours aux mots." data-desc-en="Together with my class, we acted, filmed and edited a dialogue-free fiction featuring students cheating during an exam. The next day, they 
+                    discover to their bewilderment that they all received a zero. A fun and collaborative exercise that allowed us to work on visual storytelling without the 
+                    use of words." data-team="La classe" data-tags="Court-métrage,Fiction">
+                    <img src="IMAGES/VISUEL/cover-tricherie.webp" alt="Court-métrage" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Tricherie" data-en="Cheating">Tricherie</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Court-métrage</span>
+                            <span class="card-tag">Fiction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--NEUTRALITÉ-->
+                <div class="project-card" data-category="ue1" data-title-fr="La neutralité" data-title-en="Neutrality"
+                    data-desc-fr="À la demande de notre professeur, chaque élève devait choisir un sujet et le présenter sous forme de post Instagram. J'ai choisi la neutralité comme thématique, 
+                    et j'ai relevé le défi de l'expliquer de façon… neutre. Un exercice créatif qui m'a permis de travailler la communication visuelle et la concision sur les réseaux sociaux."
+                    data-desc-en="At our professor's request, each student had to choose a topic and present it as an Instagram post. I chose neutrality as my theme, and took on the challenge of 
+                    explaining it in a… neutral way. A creative exercise that allowed me to work on visual communication and conciseness for social media."
+                    data-tags="Post Instagram,Communication" data-link="IMAGES/VISUEL/projet-neutralite.pdf">
+                    <img src="IMAGES/VISUEL/cover-neutralité.webp" alt="Post Neutralité" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="La neutralité" data-en="Neutrality">La neutralité
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Post Instagram</span>
+                            <span class="card-tag">Communication</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--BLOK-->
+                <div class="project-card" data-category="ue1" data-title-fr="Blok actu" data-title-en="Neutrality"
+                    data-desc-fr="À la demande de notre professeur, chaque élève devait choisir un sujet et le présenter sous forme de post Instagram. J'ai choisi la neutralité comme thématique, 
+                    et j'ai relevé le défi de l'expliquer de façon… neutre. Un exercice créatif qui m'a permis de travailler la communication visuelle et la concision sur les réseaux sociaux."
+                    data-desc-en="At our professor's request, each student had to choose a topic and present it as an Instagram post. I chose neutrality as my theme, and took on the challenge of 
+                    explaining it in a… neutral way. A creative exercise that allowed me to work on visual communication and conciseness for social media."
+                    data-tags="Post Instagram,Communication"
+                    data-link="https://www.instagram.com/p/DTjB9nEEvKx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
+                    <img src="IMAGES/VISUEL/cover-blok.webp" alt="Post Neutralité" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Blok actu" data-en="Neutrality">Blok actu
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Post Instagram</span>
+                            <span class="card-tag">Communication</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--TROPICANA-->
+                <div class="project-card" data-category="ue1" data-title-fr="Tropicana" data-title-en="Tropicana"
+                    data-desc-fr="J'ai réalisé une affiche fictive pour la marque Tropicana. Ce projet m'a permis de travailler sous contraintes de prix tout en respectant scrupuleusement 
+                    l'identité visuelle de la marque"
+                    data-desc-en="I created a fictional poster for the Tropicana brand. This project allowed me to work within budget constraints while strictly respecting the brand's visual identity."
+                    data-tags="Publicité,Affiche" data-link="IMAGES/VISUEL/tropicana.webp">
+                    <img src="IMAGES/VISUEL/cover-tropicana.webp" alt="Publicité" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Tropicana" data-en="Tropicana">Tropicana</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Publicité</span>
+                            <span class="card-tag">Affiche</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--GAME UI-->
+                <div class="project-card" data-category="ue1" data-title-fr="Game Of Thrones"
+                    data-title-en="Game Of Thrones"
+                    data-desc-fr="Avec ma camarade, nous avons conçu la maquette non fonctionnelle de l'interface d'un jeu vidéo de fantasy-aventure. Notre objectif était de proposer un écran d'accueil clair, accessible et ergonomique, 
+                    afin d'offrir une expérience fluide dès la première interaction du joueur. Ce projet nous a permis de nous initier aux principes de l'UX/UI design appliqués au domaine du jeu vidéo."
+                    data-desc-en="Together with my classmate, we designed a non-functional mockup of a fantasy-adventure video game interface. Our goal was to create a clear, accessible and ergonomic home screen, 
+                    offering a smooth experience from the player's very first interaction. This project introduced us to UX/UI design principles applied to the world of video games."
+                    data-tags="Jeu,Aventure,Design UI/UX" data-team="SABAN Kériane"
+                    data-link="IMAGES/VISUEL/jeu_mobile_ui.webp">
+                    <img src="IMAGES/VISUEL/cover-gameui.webp" alt="Design UI/UX" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Game Of Thrones" data-en="Game Of Thrones">Game Of Thrones
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Jeu</span>
+                            <span class="card-tag">Aventure</span>
+                            <span class="card-tag">Design UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UE COMPRENDRE -->
+                <!--BANDE ANNONCE FILM SPIDERMAN-->
+                <div class="project-card" data-category="ue5" data-title-fr="Teaser Spiderman 2"
+                    data-title-en="Teaser Spiderman 2" data-desc-fr="L'objectif initial était de créer la publicité d'un produit, cependant j'ai réalisé un teaser du jeu vidéo Spider-Man 2. 
+                    En respectant la contrainte imposée par le professeur d'une durée de 15 secondes, j'ai travaillé sur le rythme, l'impact visuel et la narration 
+                    pour capter l'attention en un minimum de temps." data-desc-en="The initial goal was to create an advertisement for a product, but I ended up making a teaser for the video game Spider-Man 2. 
+                    Working within the 15-second time limit set by the professor, I focused on pacing, visual impact, and storytelling 
+                    to capture the viewer's attention as quickly as possible." data-tags="Vidéo,Jeu,Teaser,Publicité"
+                    data-link="https://youtu.be/rGRRY0qCh80">
+                    <img src="IMAGES/VISUEL/cover-spiderman1.webp" alt="Teaser Spiderman 2" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Teaser Spiderman 2" data-en="Teaser Spiderman 2">
+                            Teaser Spiderman 2
+                        </div>
+                        <div class="card-tags">
+                            <span class="card-tag">Vidéo</span>
+                            <span class="card-tag">Jeu</span>
+                            <span class="card-tag">Teaser</span>
+                            <span class="card-tag">Publicité</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--PUBLICITÉ SPIDERMAN-->
+                <div class="project-card" data-category="ue5" data-title-fr="Publicité Spiderman 2"
+                    data-title-en="Spider-Man 2 publicity"
+                    data-desc-fr="Dans le cadre du même exercice, j'ai cette fois réalisé une publicité en bonne et due forme pour un produit, en respectant la contrainte de 15 secondes imposée 
+                    par le professeur. Un format court qui demande rigueur et efficacité pour transmettre un message clair et percutant en un minimum de temps."
+                    data-desc-en="As part of the same exercise, I this time created a proper advertisement for a product, respecting the 15-second time constraint set by the professor. 
+                    A short format that requires precision and efficiency to deliver a clear and impactful message in as little time as possible."
+                    data-tags="Vidéo,Jeu,Publicité" data-link="https://youtu.be/08uw1OGFPAg">
+                    <img src="IMAGES/VISUEL/cover-spiderman2.webp" alt="Publicité Spiderman 2" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Publicité Spiderman 2" data-en="Spider-Man 2 publicity">
+                            Publicité
+                            Spiderman 2</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Vidéo</span>
+                            <span class="card-tag">Jeu</span>
+                            <span class="card-tag">Publicité</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--GUIDE D'UTILISATION RAY-BAN-->
+                <div class="project-card" data-category="ue5" data-title-fr="Guide d'utilisation"
+                    data-title-en="User Guide"
+                    data-desc-fr="Le professeur nous a demandé de choisir un objet d'une marque et d'en réaliser un guide d'utilisation en anglais. J'ai choisi les lunettes connectées Ray-Ban Meta, 
+                    qui intègrent une caméra permettant de filmer. Ce projet m'a permis de travailler la rédaction technique en anglais tout en m'adaptant aux codes de communication d'une grande marque."
+                    data-desc-en="The professor asked us to choose a branded product and create a user guide in English. I chose the Ray-Ban Meta smart glasses, which feature a built-in camera for filming. 
+                    This project allowed me to work on technical writing in English while adapting to the communication standards of a major brand."
+                    data-tags="Analyse,Tutoriel,Utilisateur" data-link="IMAGES/VISUEL/MANUAL_RAY_BAN.pdf">
+                    <img src="IMAGES/VISUEL/cover-rayban.webp" alt="Guide d'utilisation" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Guide d'utilisation" data-en="User Guide">Guide
+                            d'utilisation</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Analyse</span>
+                            <span class="card-tag">Tutoriel</span>
+                            <span class="card-tag">Utilisateur</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UE CONCEVOIR -->
+                <!--APPLICATION GARÉ'Y-->
+                <div class="project-card" data-category="ue2" data-title-fr="Application Garé'y"
+                    data-title-en="Garé'y App" data-desc-fr="En équipe, nous avons conçu une application fictive répondant à une problématique courante en Guadeloupe : la recherche de places de parking. Après 
+                    analyse de différentes problématiques locales, nous avons développé le concept d'une application permettant de localiser en temps réel les places disponibles. Je 
+                    me suis chargée de la conception de la maquette. Ce projet m'a permis de développer ma capacité d'analyse, d'identifier les failles du projet et d'y apporter des 
+                    solutions pour en garantir l'efficacité."
+                    data-desc-en="As a team, we designed a fictional application addressing a common issue in Guadeloupe: finding available parking spots. After analyzing various local 
+                    problems, we developed the concept of an app allowing users to locate available spaces in real time. I was responsible for designing the mockup. This project helped 
+                    me develop my analytical skills, identify the project's weaknesses and propose solutions to ensure its effectiveness."
+                    data-tags="UX/UI,Application,Communication,Analyse" data-team="SABAN Kériane, SARTHAL Christina"
+                    data-link="IMAGES/VISUEL/PROJET_GAREY.pdf">
+
+                    <img src="IMAGES/VISUEL/cover-gare-y.webp" alt="Application Garé'y" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Application Garé'y" data-en="Garé'y App">
+                            Application Garé'y</div>
+                        <div class="card-tags">
+                            <span class="card-tag">UX/UI</span>
+                            <span class="card-tag">Application</span>
+                            <span class="card-tag">Communication</span>
+                            <span class="card-tag">Analyse</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--JUNO-->
+                <div class="project-card" data-category="ue2" data-title-fr="Juno" data-title-en="Juno"
+                    data-desc-fr="À la demande du professeur, j'ai créé une marque de vêtements de toutes pièces : son nom, son histoire, et son identité visuelle complète. 
+                    Un exercice créatif et stimulant qui m'a permis de développer mon sens du branding et de construire un univers cohérent autour d'une marque fictive."
+                    data-desc-en="At the professor's request, I created a clothing brand from scratch: its name, its story and its complete visual identity. A creative and 
+                    stimulating exercise that allowed me to develop my sense of branding and build a coherent universe around a fictional brand." data-tags="Branding,Identité visuelle"
+                    data-link="IMAGES/VISUEL/MANUAL_RAY_BAN.pdf">
+                    <img src="IMAGES/VISUEL/cover-juno.webp" alt="Juno Boutique de Vêtement" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Juno" data-en="Juno">
+                            Juno</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Branding</span>
+                            <span class="card-tag">Identité visuelle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--DOSSIER PPP-->
+                <div class="project-card" data-category="ue2" data-title-fr="Dossier PPP" data-title-en="PPP project"
+                    data-desc-fr="J'ai réalisé ce dossier de projet professionnel qui m'a permis de définir ce que je voulais vraiment et de clarifier mes objectifs. 
+                    Bien que ceux-ci aient évolué au fil du temps, je reste déterminée à les accomplir et à construire le parcours qui me correspond."
+                    data-desc-en="I completed this professional project file which helped me define what I truly wanted and clarify my goals. Although they have 
+                    evolved over time, I remain determined to achieve them and build the path that suits me best."
+                    data-tags="Recherche,Master,Avenir" data-link="IMAGES/VISUEL/projet-ppp.pdf">
+                    <img src="IMAGES/VISUEL/cover-dossier-ppp.webp" alt="Dossier PPP" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Dossier PPP" data-en="PPP project">Dossier PPP</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Recherche</span>
+                            <span class="card-tag">Master</span>
+                            <span class="card-tag">Avenir</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UE ENTREPRENDRE -->
+                <!--INTERFACE 2025-->
+                <div class="project-card" data-category="ue4" data-title-fr="Interface 2025"
+                    data-title-en="Interface 2025" data-desc-fr="Avec ma classe, nous avons effectué un voyage pédagogique au Québec. Retrouvez toutes nos aventures, découvertes et moments 
+                    forts dans ce récap retraçant cette expérience inoubliable." data-desc-en="Together with my class, we took part in an educational trip to Quebec. Relive all our adventures, discoveries and highlights 
+                    in this recap of an unforgettable experience."
+                    data-tags="Voyage pédagogique,Interface,Canada,Québec" data-team="La classe"
+                    data-link="https://www.instagram.com/mmiproject.fwi/">
+                    <img src="IMAGES/VISUEL/cover-interface.webp" alt="Récap Interface" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Interface 2025" data-en="Interface 2025">Interface 2025</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Voyage pédagogique</span>
+                            <span class="card-tag">Interface</span>
+                            <span class="card-tag">Canada</span>
+                            <span class="card-tag">Québec</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--FLORA BEAUTY-->
+                <div class="project-card" data-category="ue4" data-title-fr="Flora Beauty" data-title-en="Flora Beauty"
+                    data-desc-fr="Dans le cadre de ce projet en groupe, nous avons choisi de reprendre la marque de Rihanna, Fenty, afin d'en retravailler l'identité complète et la stratégie 
+                    de mise en vente. Nous avons défini les cibles, analysé les problématiques liées à la marque et réfléchi à une nouvelle approche de communication pour ses produits. 
+                    Un projet complet qui nous a permis d'aborder le branding et le marketing de façon globale."
+                    data-desc-en="As part of this group project, we chose to rework the brand identity and sales strategy of Rihanna's brand, Fenty. We defined the target audiences, analyzed 
+                    the brand's key challenges and developed a new communication approach for its products. A comprehensive project that allowed us to explore branding and marketing from a 
+                    global perspective." data-tags="Branding,Marketing,Communication"
+                    data-team="MARIE-JOSEPH Morgan, SABAN Kériane" data-link="IMAGES/VISUEL/Projet-flora.pdf">
+
+                    <img src="IMAGES/VISUEL/cover-flora.webp" alt="Flora Beauty" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Flora Beauty" data-en="Flora Beauty">
+                            Flora Beauty</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Branding</span>
+                            <span class="card-tag">Marketing</span>
+                            <span class="card-tag">Communication</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--IMPRESSION 3D-->
+                <div class="project-card" data-category="ue4" data-title-fr="Impression 3D" data-title-en="3D printing"
+                    data-desc-fr="Avec ma classe, nous avons assisté à une présentation sur l'impression 3D. J'ai eu l'occasion de manipuler moi-même le logiciel dédié et d'imprimer 
+                    quelques petits objets. Une découverte enrichissante qui m'a initiée à cette technologie et à ses nombreuses possibilités créatives."
+                    data-desc-en="Together with my class, we attended a presentation on 3D printing. I had the opportunity to use the dedicated software myself and print a few small 
+                    objects. An enriching discovery that introduced me to this technology and its many creative possibilities."
+                    data-tags="Impression,3D,Modélisation" data-link="IMAGES/VISUEL/projet-3d.pdf">
+                    <img src="IMAGES/VISUEL/cover-3d.webp" alt="3D" class="card-img">
+                    <div class="card-body">
+                        <div class="card-title" data-fr="Impression 3D" data-en="3D printing">Impression 3D</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Impression</span>
+                            <span class="card-tag">3D</span>
+                            <span class="card-tag">Modélisation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modale -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-img-wrap" id="modalImgWrap">
+                <div class="modal-img-placeholder" data-fr="Image du projet" data-en="Project image">Image du projet
+                </div>
+            </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-tags" id="modalTags"></div>
+                <div class="modal-team" id="modalTeam"></div>
+                <div class="modal-sep"></div>
+                <div>
+                    <div class="modal-label" data-fr="Description" data-en="Description">Description</div>
+                    <p class="modal-desc" id="modalDesc"></p>
+                </div>
+                <a href="#" class="modal-link" id="modalLink" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span data-fr="Voir le projet" data-en="View project">Voir le projet</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIED DE PAGE -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-content">
+
+                <div class="footer-brand">
+                    <img src="IMAGES/LOGOS/logo-1.webp" id="footer-logo-img" alt="Logo WA" class="footer-logo">
+                    <div class="footer-socials">
+                        <a href="https://www.linkedin.com/in/walter-alexia-243b412a7/" class="footer-social-btn"
+                            target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/walter_asj/" class="footer-social-btn" target="_blank"
+                            rel="noopener" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Menu" data-en="Menu">Menu</h5>
+                    <ul>
+                        <li><a href="index.html" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                        <li><a href="index.html#apropos" data-fr="À propos" data-en="About">À propos</a></li>
+                        <li><a href="index.html#competences" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+                        <li><a href="index.html#projets" data-fr="Projets" data-en="Projects">Projets</a></li>
+                        <li><a href="index.html#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Légale" data-en="Legal">Légale</h5>
+                    <ul>
+                        <li><a href="mentions.html" data-fr="Mentions légales" data-en="Legal notices">Mentions
+                                légales</a></li>
+                        <li><a href="mentions.html" data-fr="Politique de confidentialité"
+                                data-en="Privacy policy">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 walter-alexia-butmmi.com — <a href="mentions.html" data-fr="Tous droits réservés"
+                        data-en="All rights reserved">Tous droits réservés</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // MENU BURGER
+        // =============================================
+        const burger = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('overlay');
+        const subBtn = document.getElementById('subBtn');
+        const subList = document.getElementById('subList');
+
+        function toggleMenu() {
+            burger.classList.toggle('open');
+            menu.classList.toggle('open');
+            menuOverlay.classList.toggle('open');
+            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        subBtn.addEventListener('click', () => {
+            subBtn.classList.toggle('open');
+            subList.classList.toggle('open');
+        });
+
+        // =============================================
+        // BOUTON RETOUR EN HAUT
+        // =============================================
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        const sectionMmi = document.getElementById('projet-mmi');
+
+        window.addEventListener('scroll', () => {
+            const triggerY = sectionMmi.getBoundingClientRect().top + window.scrollY - 230;
+            scrollBtn.classList.toggle('visible', window.scrollY >= triggerY);
+        });
+
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // =============================================
+        // FILTRES PROJETS
+        // =============================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const pill = document.getElementById('filterPill');
+        const cards = document.querySelectorAll('.project-card');
+
+        function movePill(btn) {
+            pill.style.left = btn.offsetLeft + 'px';
+            pill.style.width = btn.offsetWidth + 'px';
+        }
+
+        setTimeout(() => movePill(document.querySelector('.filter-btn.active')), 50);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                movePill(btn);
+                const filter = btn.dataset.filter;
+                cards.forEach(card => {
+                    card.classList.toggle('hidden', filter !== 'all' && card.dataset.category !== filter);
+                });
+            });
+        });
+
+        window.addEventListener('resize', () => movePill(document.querySelector('.filter-btn.active')));
+
+        // =============================================
+        // MODALE
+        // =============================================
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalTags = document.getElementById('modalTags');
+        const modalTeam = document.getElementById('modalTeam');
+        const modalImgWrap = document.getElementById('modalImgWrap');
+        const modalClose = document.getElementById('modalClose');
+        const modalLink = document.getElementById('modalLink');
+
+        function openModal(card) {
+            const lang = document.documentElement.lang || 'fr';
+
+            // Titre et description selon la langue
+            modalTitle.textContent = lang === 'en'
+                ? (card.dataset.titleEn || card.dataset.titleFr)
+                : card.dataset.titleFr;
+
+            modalDesc.textContent = lang === 'en'
+                ? (card.dataset.descEn || card.dataset.descFr)
+                : card.dataset.descFr;
+
+            // Tags
+            modalTags.innerHTML = '';
+            card.dataset.tags.split(',').forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'modal-tag';
+                span.textContent = tag.trim();
+                modalTags.appendChild(span);
+            });
+
+            // Équipe
+            const team = card.dataset.team;
+            if (team && team.trim()) {
+                modalTeam.innerHTML = `<i class="fa-solid fa-users"></i> <span>${team}</span>`;
+                modalTeam.style.display = 'flex';
+            } else {
+                modalTeam.innerHTML = '';
+                modalTeam.style.display = 'none';
+            }
+
+            // Image
+            const cardImg = card.querySelector('.card-img');
+            if (cardImg) {
+                modalImgWrap.innerHTML = `<img src="${cardImg.src}" alt="${cardImg.alt}">`;
+            } else {
+                const placeholder = lang === 'en' ? 'Project image' : 'Image du projet';
+                modalImgWrap.innerHTML = `<div class="modal-img-placeholder">${placeholder}</div>`;
+            }
+
+            // Lien
+            const link = card.dataset.link;
+            if (link) {
+                modalLink.href = link;
+                modalLink.style.display = 'inline-flex';
+            } else {
+                modalLink.style.display = 'none';
+            }
+
+            modalOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        cards.forEach(card => card.addEventListener('click', () => openModal(card)));
+
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // =============================================
+        // PANNEAU ACCESSIBILITÉ
+        // =============================================
+        const btnAccess = document.getElementById('btn-access');
+        const panel = document.getElementById('access-panel');
+
+        btnAccess.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.toggle('open');
+        });
+
+        document.addEventListener('click', e => {
+            if (!panel.contains(e.target) && e.target !== btnAccess) {
+                panel.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') panel.classList.remove('open');
+        });
+
+        // =============================================
+        // LANGUE
+        // =============================================
+        function applyLangToDOM(lang) {
+            document.querySelectorAll('[data-fr]').forEach(el => {
+                const val = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+                if (val !== undefined) el.textContent = val;
+            });
+            document.documentElement.lang = lang;
+        }
+
+        function setLang(lang) {
+            document.getElementById('langFR').classList.toggle('active', lang === 'fr');
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+
+            applyLangToDOM(lang);
+            updateThemeLabel(lang);
+            localStorage.setItem('lang', lang);
+        }
+
+        // =============================================
+        // VOICEOVER
+        // =============================================
+        let isReading = false;
+
+        const voiceTexts = {
+            fr: "Bienvenue sur la page des projets MMI d'Alexia Walter. Découvrez ses réalisations dans les domaines du développement web, du design et de la communication.",
+            en: "Welcome to Alexia Walter's MMI projects page. Discover her work in web development, design and communication."
+        };
+
+        function playVoice(lang) {
+            const indicator = document.getElementById('reading-indicator');
+            const voiceBtnFR = document.getElementById('voiceFR');
+            const voiceBtnEN = document.getElementById('voiceEN');
+
+            if (isReading) {
+                window.speechSynthesis.cancel();
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(voiceTexts[lang]);
+            utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+            utterance.rate = 0.95;
+
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(v => v.lang.startsWith(lang === 'fr' ? 'fr' : 'en'));
+            if (voice) utterance.voice = voice;
+
+            utterance.onend = () => {
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+            };
+
+            window.speechSynthesis.speak(utterance);
+            isReading = true;
+            indicator.classList.add('show');
+            if (lang === 'fr') voiceBtnFR.classList.add('active');
+            else voiceBtnEN.classList.add('active');
+        }
+
+        window.speechSynthesis.getVoices();
+
+        // =============================================
+        // MODE CLAIR / SOMBRE
+        // =============================================
+        const btnTheme = document.getElementById('btn-theme');
+        const themeLabel = document.getElementById('theme-label');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateThemeLabel(lang) {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            // L'icône et le label indiquent vers où on peut aller (pas l'état actuel)
+            if (isLight) {
+                // On est en clair → on propose le sombre
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = lang === 'en' ? 'Dark mode' : 'Mode sombre';
+            } else {
+                // On est en sombre → on propose le clair
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = lang === 'en' ? 'Light mode' : 'Mode clair';
+            }
+        }
+
+        function setDark(dark) {
+            const lang = document.documentElement.lang || 'fr';
+            if (dark) {
+                document.documentElement.classList.remove('light-mode');
+                document.body.classList.remove('light');
+                btnTheme.classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+                // Logo et bannière mode sombre
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                document.body.classList.add('light');
+                btnTheme.classList.add('active');
+                localStorage.setItem('theme', 'light');
+                // Logo et bannière mode clair
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+            }
+            updateThemeLabel(lang);
+        }
+
+        btnTheme.addEventListener('click', () => {
+            setDark(document.documentElement.classList.contains('light-mode'));
+        });
+
+        // =============================================
+        // INITIALISATION
+        // =============================================
+        (function init() {
+            const savedTheme = localStorage.getItem('theme');
+            setDark(savedTheme !== 'light');
+
+            const savedLang = localStorage.getItem('lang') || 'fr';
+            setLang(savedLang);
+        })();
+    </script>
+
+</body>
+
+</html>

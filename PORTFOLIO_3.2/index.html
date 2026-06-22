@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accueil - WALTER Alexia</title>
+
+    <!--ANTI-FLASH -->
+    <script>
+        (function () {
+            var theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!--BOUTONS FLOTTANTS : RETOUR EN HAUT & ACCESSIBILITÉ-->
+    <button id="btn-top" aria-label="Retour en haut de page">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
+    <button id="btn-access" aria-label="Options d'accessibilité">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Panneau accessibilité -->
+    <div id="access-panel" role="dialog" aria-label="Options d'accessibilité">
+        <div class="panel-title" data-fr="Paramètres" data-en="Settings">Paramètres</div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-globe"></i>
+                <span data-fr="Langue" data-en="Language">Langue</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn active" id="langFR" onclick="setLang('fr')">FR</button>
+                <button class="lang-btn" id="langEN" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="panel-row">
+            <span class="panel-row-label">
+                <i class="fas fa-volume-up"></i>
+                <span data-fr="Lecture vocale" data-en="Voice reading">Lecture vocale</span>
+            </span>
+            <div class="lang-btns">
+                <button class="lang-btn" id="voiceFR" onclick="playVoice('fr')">FR</button>
+                <button class="lang-btn" id="voiceEN" onclick="playVoice('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="reading-indicator" id="reading-indicator">
+            <div class="reading-dot"></div>
+            <span data-fr="Lecture en cours…" data-en="Reading in progress…">Lecture en cours…</span>
+        </div>
+
+        <button class="access-btn" id="btn-theme">
+            <i class="fas fa-sun" id="theme-icon"></i>
+            <span id="theme-label">Mode clair</span>
+        </button>
+    </div>
+
+    <!-- Overlay menu mobile -->
+    <div class="mobile-overlay" id="overlay"></div>
+
+    <!-- NAVBAR -->
+    <nav class="custom-nav">
+        <div class="nav-inner">
+            <a class="navbar-brand" href="index.html">
+                <img id="logo-img" src="IMAGES/LOGOS/logo-1.webp" alt="Logo WA">
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link active" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                <li><a href="index.html#apropos" class="nav-link" data-fr="À propos" data-en="About">À propos</a></li>
+                <li><a href="index.html#competences" class="nav-link" data-fr="Compétences"
+                        data-en="Skills">Compétences</a></li>
+                <li class="has-dropdown">
+                    <a href="#" class="nav-link">
+                        <span data-fr="Projets" data-en="Projects">Projets</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en
+                                MMI</a></li>
+                        <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a>
+                        </li>
+                        <li><a href="perso-projets.html" data-fr="Projets Personnels"
+                                data-en="Personal Projects">Projets Personnels</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="index.html#contact" class="nav-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+
+            <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="index.html" class="mobile-link active" data-fr="Accueil" data-en="Home">Accueil</a></li>
+            <li><a href="index.html#apropos" class="mobile-link" data-fr="À propos" data-en="About">À propos</a></li>
+            <li><a href="index.html#competences" class="mobile-link" data-fr="Compétences"
+                    data-en="Skills">Compétences</a></li>
+            <li>
+                <button class="mobile-sub-btn" id="subBtn">
+                    <span data-fr="Projets" data-en="Projects">Projets</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="mobile-sub-list" id="subList">
+                    <li><a href="mmi-projets.html" data-fr="Projets en MMI" data-en="MMI Projects">Projets en MMI</a>
+                    </li>
+                    <li><a href="alternance-projets.html" data-fr="Alternance" data-en="Internship">Alternance</a></li>
+                    <li><a href="perso-projets.html" data-fr="Projets Personnels" data-en="Personal Projects">Projets
+                            Personnels</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="mobile-sep"></div>
+        <a href="index.html#contact" class="mobile-cta" data-fr="Contactez-moi" data-en="Contact me">Contactez-moi</a>
+    </div>
+
+    <!-- BANNIÈRE -->
+    <section class="banner">
+        <div class="banner-content">
+            <p class="banner-eyebrow">
+                WALTER Alexia
+                <span class="sep"></span>
+                <span data-fr="Étudiante en MMI" data-en="MMI Student">Étudiante en MMI</span>
+            </p>
+
+            <h1 class="banner-title">
+                <span id="typedWord" class="typed-word"></span><span class="banner-typing__caret"
+                    aria-hidden="true"></span>
+            </h1>
+
+            <div class="scroll-arrow" onclick="document.querySelector('#apropos').scrollIntoView({behavior:'smooth'})">
+                <span data-fr="Découvrir" data-en="Discover">Découvrir</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- À PROPOS -->
+    <section class="about2" id="apropos">
+        <div class="about2-wrapper">
+
+            <h2 class="about2-section-title" data-fr="À propos" data-en="About me">À propos</h2>
+
+            <div class="about2-top">
+
+                <div class="about2-card" id="aboutCard">
+                    <h3 class="about2-name">WALTER Alexia</h3>
+
+                    <p class="about2-text"
+                        data-fr="Infographiste aux multiples casquettes, j'effectue mon alternance chez 4A2E tout en poursuivant ma troisième année de BUT MMI « Bachelor Universitaire de Technologie des Métiers du Multimédia et de l'Internet » au centre de formation ASFO. Portée par ma passion pour le dessin et le design graphique, je m'épanouis chaque jour dans un métier qui me ressemble et que je souhaite exercer pleinement."
+                        data-en="A multifaceted graphic designer, I am completing my work-study program at 4A2E while pursuing my third year of BUT MMI (University Bachelor of Technology in Multimedia and Internet Trades) at the ASFO training center. Driven by my passion for drawing and graphic design, I thrive every day in a career that reflects who I am and that I aspire to practice fully.">
+                        Infographiste aux multiples casquettes, j'effectue mon alternance chez 4A2E tout en poursuivant
+                        ma troisième année de BUT MMI « Bachelor Universitaire de Technologie des Métiers du Multimédia
+                        et de l'Internet » au centre de formation ASFO. Portée par ma passion pour le dessin et le
+                        design graphique, je m'épanouis chaque jour dans un métier qui me ressemble et que je souhaite
+                        exercer pleinement.
+                    </p>
+
+                    <div class="about2-card-sep"></div>
+
+                    <div class="about2-taskbar">
+                        <div class="taskbar-words">
+                            <span id="taskbarWord"></span><span class="taskbar-caret" aria-hidden="true"></span>
+                        </div>
+                        <div class="taskbar-sep"></div>
+                        <div class="taskbar-icons">
+                            <a href="https://www.linkedin.com/in/walter-alexia-243b412a7/" class="taskbar-icon"
+                                data-tooltip="LinkedIn" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://www.instagram.com/walter_asj/" class="taskbar-icon"
+                                data-tooltip="Instagram" target="_blank" rel="noopener">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <button class="taskbar-icon" id="cvBtn" data-tooltip="Voir le CV">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about2-photo">
+                    <div class="photo-card">
+                        <img src="IMAGES/PHOTO/alexia-4.webp" alt="Alexia Walter">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modale CV -->
+            <div class="cv-overlay" id="cvOverlay">
+                <div class="cv-modal" id="cvModal">
+                    <div class="cv-modal-header">
+                        <div class="cv-modal-title">
+                            <i class="fas fa-file-pdf"></i>
+                            CV — WALTER Alexia
+                        </div>
+                        <div class="cv-modal-actions">
+                            <a href="IMAGES/CV_WALTER_ALEXIA.pdf" download class="cv-download-btn">
+                                <i class="fas fa-download"></i>
+                                <span data-fr="Télécharger" data-en="Download">Télécharger</span>
+                            </a>
+                            <button class="cv-close-btn" id="cvClose">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cv-modal-body">
+                        <iframe src="IMAGES/CV_WALTER_ALEXIA.pdf" title="CV Alexia Walter"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dossiers -->
+            <div class="about2-folders">
+
+                <div class="folder-card" id="folderFormations">
+                    <div class="folder-header">
+                        <div>
+                            <div class="folder-title" data-fr="Parcours" data-en="Background">Parcours</div>
+                            <div class="folder-sub" data-fr="Voir plus" data-en="See more">Voir plus</div>
+                        </div>
+                        <div class="folder-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="folder-body">
+                        <div class="folder-body-inner">
+
+                            <div class="folder-item">
+                                <i class="fas fa-graduation-cap folder-item-icon"></i>
+                                <span data-fr="BUT MMI – IUT de la Guadeloupe (2023–2026)."
+                                    data-en="BUT MMI – IUT of Guadeloupe (2023–2026).">BUT MMI – IUT de la Guadeloupe
+                                    (2023–2026).</span>
+                            </div>
+
+                            <div class="folder-item">
+                                <i class="fas fa-school folder-item-icon"></i>
+                                <span data-fr="Baccalauréat Général - LGT Baimbridge (2022-2023)."
+                                    data-en="General Baccalaureate - LGT Baimbridge (2022-2023).">Baccalauréat Général -
+                                    LGT Baimbridge (2022-2023).</span>
+                            </div>
+
+                            <div class="folder-item">
+                                <i class="fas fa-book folder-item-icon"></i>
+                                <span data-fr="Brevet des Collèges - Collège Saint-John-Perse (2019-2020)."
+                                    data-en="Middle School Certificate - Saint-John-Perse College (2019-2020).">Brevet
+                                    des Collèges - Collège Saint-John-Perse (2019-2020).</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="folder-card" id="folderCertifications">
+                    <div class="folder-header">
+                        <div>
+                            <div class="folder-title" data-fr="Certifications" data-en="Certifications">Certifications
+                            </div>
+                            <div class="folder-sub" data-fr="Voir plus" data-en="See more">Voir plus</div>
+                        </div>
+                        <div class="folder-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="folder-body">
+                        <div class="folder-body-inner">
+
+                            <a href="IMAGES/sst-walter-alexia.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-heart-pulse folder-item-icon"></i>
+                                <span data-fr="SST : Sauveteur Secouriste du Travail"
+                                    data-en="SST: Workplace First Responder">SST : Sauveteur Secouriste du
+                                    Travail</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                            <a href="IMAGES/impacts-environnementaux.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-leaf folder-item-icon"></i>
+                                <span data-fr="Impacts Environnementaux du Numérique."
+                                    data-en="Environmental Impacts of Digital Technology.">Impacts Environnementaux du
+                                    Numérique.</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                            <a href="IMAGES/web-se-mantique-.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-globe folder-item-icon"></i>
+                                <span data-fr="Web Sémantique et Web de données."
+                                    data-en="Semantic Web and Web of Data.">Web Sémantique et Web de données.</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                            <a href="IMAGES/les-fondamentaux-de-l-ia.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-robot folder-item-icon"></i>
+                                <span data-fr="Les fondamentaux de l'IA (CNFPT)."
+                                    data-en="Fundamentals of AI (CNFPT).">Les fondamentaux de l'IA (CNFPT).</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                            <a href="IMAGES/eloquence.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-microphone folder-item-icon"></i>
+                                <span data-fr="L'éloquence pour tous (Association Eloquence de la différence)."
+                                    data-en="Eloquence for all (Eloquence de la différence Association).">L'éloquence
+                                    pour tous (Association Eloquence de la différence).</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                            <a href="IMAGES/securite-materielle.pdf" target="_blank" rel="noopener"
+                                class="folder-item folder-item-link">
+                                <i class="fas fa-shield-halved folder-item-icon"></i>
+                                <span data-fr="Sécurité matérielle : les attaques physiques."
+                                    data-en="Hardware Security: Physical Attacks.">Sécurité matérielle : les attaques
+                                    physiques.</span>
+                                <i class="fas fa-arrow-up-right folder-item-arrow"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPÉTENCES -->
+    <section class="competences" id="competences">
+        <div class="competences-wrapper">
+
+            <h2 class="competences-title" data-fr="Compétences" data-en="Skills">Compétences</h2>
+
+            <div class="competences-grid">
+
+                <div class="skill-card">
+                    <div class="skill-card-title" data-fr="Création numérique" data-en="Digital Creation">Création
+                        numérique</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Illustrator</span>
+                        <span class="skill-tag">Photoshop</span>
+                        <span class="skill-tag">InDesign</span>
+                        <span class="skill-tag">Canva</span>
+                        <span class="skill-tag">Affinity</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-card-title" data-fr="Audiovisuel" data-en="Audiovisual">Audiovisuel</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">DaVinci Resolve</span>
+                        <span class="skill-tag">CapCut</span>
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-card-title" data-fr="Programmation" data-en="Development">Programmation</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">WordPress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJETS -->
+    <section class="projects-section" id="projets">
+        <div class="projects-wrapper">
+
+            <h2 class="projects-title" data-fr="Mes Projets &amp; Alternance" data-en="My Projects &amp; Internship">Mes
+                Projets &amp; Alternance</h2>
+            <p class="projects-desc"
+                data-fr="Découvrez un aperçu des projets que j'ai menés durant ma formation et au sein de l'entreprise."
+                data-en="Discover an overview of the projects I led during my training and within the company.">
+                Découvrez un aperçu des projets que j'ai menés durant ma formation et au sein de l'entreprise.
+            </p>
+
+            <div class="projects-grid">
+
+                <div class="project-card" style="background-image: url('IMAGES/VISUEL/cover-mmi.webp')">
+                    <a href="mmi-projets.html" class="project-card-full-link" aria-label="Voir les projets MMI"></a>
+                    <h3 class="project-card-title" data-fr="Projets en MMI" data-en="MMI Projects">Projets en MMI</h3>
+                </div>
+
+                <div class="project-card" style="background-image: url('IMAGES/VISUEL/cover-alternance.webp')">
+                    <a href="alternance-projets.html" class="project-card-full-link" aria-label="Voir l'alternance"></a>
+                    <h3 class="project-card-title" data-fr="Alternance" data-en="Internship">Alternance</h3>
+                </div>
+
+                <div class="project-card" style="background-image: url('IMAGES/VISUEL/cover-pj-perso.webp')">
+                    <a href="perso-projets.html" class="project-card-full-link"
+                        aria-label="Voir les projets personnels"></a>
+                    <h3 class="project-card-title" data-fr="Projets personnels" data-en="Personal Projects">Projets
+                        personnels</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULAIRE DE CONTACT -->
+    <section class="contact-section" id="contact">
+        <div class="contact-wrapper">
+
+            <div class="contact-header">
+                <h2 class="contact-title" data-fr="Contactez-moi !" data-en="Contact me!">Contactez-moi !</h2>
+            </div>
+
+            <form class="contact-form" action="https://formspree.io/f/xrbelnya" method="POST">
+
+                <div class="form-status success" id="formSuccess">
+                    <i class="fas fa-check-circle"></i>
+                    <span data-fr="Votre message a bien été envoyé !" data-en="Your message has been sent!">Votre
+                        message a bien été envoyé !</span>
+                </div>
+                <div class="form-status error" id="formError">
+                    <i class="fas fa-times-circle"></i>
+                    <span data-fr="Une erreur est survenue, veuillez réessayer."
+                        data-en="An error occurred, please try again.">Une erreur est survenue, veuillez
+                        réessayer.</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="name" data-fr="Nom" data-en="Name">Nom</label>
+                        <input type="text" id="name" name="name" data-placeholder-fr="Votre nom complet"
+                            data-placeholder-en="Your full name" placeholder="Votre nom complet" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" data-placeholder-fr="votre@email.com"
+                            data-placeholder-en="your@email.com" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-message">
+                    <label for="message" data-fr="Message" data-en="Message">Message</label>
+                    <textarea id="message" name="message" data-placeholder-fr="Décrivez votre projet…"
+                        data-placeholder-en="Describe your project…" placeholder="Décrivez votre projet…"
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="form-submit" id="submitBtn">
+                    <span data-fr="Envoyer" data-en="Send">Envoyer</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <div class="contact-bar">
+                <a href="mailto:alexia.walter035@gmail.com" class="contact-bar-item">
+                    <div class="bar-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="bar-text">
+                        <span class="bar-label" data-fr="Email" data-en="Email">Email</span>
+                        <span class="bar-value">alexia.walter035@gmail.com</span>
+                    </div>
+                    <i class="fas fa-arrow-up-right bar-arrow"></i>
+                </a>
+                <a href="tel:+590690641186" class="contact-bar-item">
+                    <div class="bar-icon"><i class="fas fa-phone"></i></div>
+                    <div class="bar-text">
+                        <span class="bar-label" data-fr="Téléphone" data-en="Phone">Téléphone</span>
+                        <span class="bar-value">+590 690 64 11 86</span>
+                    </div>
+                    <i class="fas fa-arrow-up-right bar-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-content">
+
+                <div class="footer-brand">
+                    <img src="IMAGES/LOGOS/logo-1.webp" id="footer-logo-img" alt="Logo WA" class="footer-logo">
+                    <div class="footer-socials">
+                        <a href="https://www.linkedin.com/in/walter-alexia-243b412a7/" class="footer-social-btn"
+                            target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/walter_asj/" class="footer-social-btn" target="_blank"
+                            rel="noopener" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Menu" data-en="Menu">Menu</h5>
+                    <ul>
+                        <li><a href="index.html" data-fr="Accueil" data-en="Home">Accueil</a></li>
+                        <li><a href="index.html#apropos" data-fr="À propos" data-en="About">À propos</a></li>
+                        <li><a href="index.html#competences" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+                        <li><a href="index.html#projets" data-fr="Projets" data-en="Projects">Projets</a></li>
+                        <li><a href="index.html#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5 data-fr="Légale" data-en="Legal">Légale</h5>
+                    <ul>
+                        <li><a href="mentions.html" data-fr="Mentions légales" data-en="Legal notices">Mentions
+                                légales</a></li>
+                        <li><a href="mentions.html" data-fr="Politique de confidentialité"
+                                data-en="Privacy policy">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 walter alexia — <a href="mentions.html" data-fr="Tous droits réservés"
+                        data-en="All rights reserved">Tous droits réservés</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // TYPEWRITER BANNIÈRE
+        // =============================================
+        const target = document.getElementById("typedWord");
+        const config = { typeSpeed: 60, deleteSpeed: 38, pauseAfterType: 1200, pauseAfterDelete: 300 };
+
+        const bannerWordsFR = ["Infographiste.", "Web-Designer.", "Photographe."];
+        const bannerWordsEN = ["Graphic Designer.", "Web Designer.", "Photographer."];
+        let bannerWords = bannerWordsFR;
+        let wordIndex = 0, charIndex = 0, deleting = false;
+
+        function loop() {
+            const current = bannerWords[wordIndex % bannerWords.length];
+            if (!deleting) {
+                charIndex++;
+                target.textContent = current.slice(0, charIndex);
+                if (charIndex >= current.length) { deleting = true; return setTimeout(loop, config.pauseAfterType); }
+                return setTimeout(loop, config.typeSpeed);
+            }
+            charIndex--;
+            target.textContent = current.slice(0, charIndex);
+            if (charIndex <= 0) {
+                deleting = false;
+                wordIndex = (wordIndex + 1) % bannerWords.length;
+                return setTimeout(loop, config.pauseAfterDelete);
+            }
+            return setTimeout(loop, config.deleteSpeed);
+        }
+        loop();
+
+        // =============================================
+        // MENU BURGER
+        // =============================================
+        const burger = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('overlay');
+        const subBtn = document.getElementById('subBtn');
+        const subList = document.getElementById('subList');
+
+        function toggleMenu() {
+            burger.classList.toggle('open');
+            menu.classList.toggle('open');
+            menuOverlay.classList.toggle('open');
+            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        subBtn.addEventListener('click', () => {
+            subBtn.classList.toggle('open');
+            subList.classList.toggle('open');
+        });
+
+        // =============================================
+        // TYPEWRITER TASKBAR
+        // =============================================
+        const taskbarWord = document.getElementById('taskbarWord');
+        const taskbarWordsFR = ['Déterminée.', 'Créative.', 'Curieuse.', 'Autonome.', 'Rigoureuse.', 'Assidue.'];
+        const taskbarWordsEN = ['Determined.', 'Creative.', 'Curious.', 'Autonomous.', 'Rigorous.', 'Diligent.'];
+        let taskbarWords = taskbarWordsFR;
+        let wi = 0, ci = 0, del = false;
+
+        function typeLoop() {
+            const current = taskbarWords[wi % taskbarWords.length];
+            if (!del) {
+                ci++;
+                taskbarWord.textContent = current.slice(0, ci);
+                if (ci >= current.length) { del = true; return setTimeout(typeLoop, 1200); }
+                return setTimeout(typeLoop, 65);
+            }
+            ci--;
+            taskbarWord.textContent = current.slice(0, ci);
+            if (ci <= 0) {
+                del = false;
+                wi = (wi + 1) % taskbarWords.length;
+                return setTimeout(typeLoop, 300);
+            }
+            return setTimeout(typeLoop, 40);
+        }
+        typeLoop();
+
+        // =============================================
+        // DOSSIERS ACCORDÉON
+        // =============================================
+        document.querySelectorAll('.folder-card').forEach(function (card) {
+            card.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isOpen = this.classList.contains('open');
+                document.querySelectorAll('.folder-card').forEach(c => c.classList.remove('open'));
+                this.classList.toggle('open', !isOpen);
+            });
+        });
+
+        // =============================================
+        // MODALE CV
+        // =============================================
+        const cvBtn = document.getElementById('cvBtn');
+        const cvOverlay = document.getElementById('cvOverlay');
+        const cvClose = document.getElementById('cvClose');
+
+        function openCV() { cvOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeCV() { cvOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+        cvBtn.addEventListener('click', openCV);
+        cvClose.addEventListener('click', closeCV);
+        cvOverlay.addEventListener('click', e => { if (e.target === cvOverlay) closeCV(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeCV(); panel.classList.remove('open'); } });
+
+        // =============================================
+        // FORMULAIRE DE CONTACT
+        // =============================================
+        const form = document.querySelector('.contact-form');
+        const successMsg = document.getElementById('formSuccess');
+        const errorMsg = document.getElementById('formError');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const isEN = document.documentElement.lang === 'en';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (isEN ? 'Sending…' : 'Envoi en cours…');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    successMsg.classList.add('show');
+                    errorMsg.classList.remove('show');
+                    form.reset();
+                    setTimeout(() => successMsg.classList.remove('show'), 5000);
+                } else {
+                    errorMsg.classList.add('show');
+                    successMsg.classList.remove('show');
+                    setTimeout(() => errorMsg.classList.remove('show'), 5000);
+                }
+            } catch {
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+                setTimeout(() => errorMsg.classList.remove('show'), 5000);
+            }
+
+            submitBtn.innerHTML = '<span data-fr="Envoyer" data-en="Send">' + (isEN ? 'Send' : 'Envoyer') + '</span> <i class="fas fa-arrow-right"></i>';
+            submitBtn.disabled = false;
+        });
+
+        // =============================================
+        // RETOUR EN HAUT
+        // =============================================
+        const btnTop = document.getElementById('btn-top');
+        const apropos = document.getElementById('apropos');
+
+        window.addEventListener('scroll', () => {
+            const triggerY = apropos
+                ? apropos.getBoundingClientRect().top + window.scrollY - 230
+                : 300;
+            btnTop.classList.toggle('visible', window.scrollY >= triggerY);
+        });
+        btnTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // =============================================
+        // PANNEAU ACCESSIBILITÉ
+        // =============================================
+        const btnAccess = document.getElementById('btn-access');
+        const panel = document.getElementById('access-panel');
+
+        btnAccess.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.toggle('open');
+        });
+        document.addEventListener('click', e => {
+            if (!panel.contains(e.target) && e.target !== btnAccess) {
+                panel.classList.remove('open');
+            }
+        });
+
+        // =============================================
+        // LANGUE
+        // =============================================
+        function applyLangToDOM(lang) {
+            document.querySelectorAll('[data-fr]').forEach(el => {
+                const val = lang === 'fr' ? el.dataset.fr : el.dataset.en;
+                if (val !== undefined) el.textContent = val;
+            });
+            document.querySelectorAll('[data-placeholder-fr]').forEach(el => {
+                el.placeholder = lang === 'fr' ? el.dataset.placeholderFr : el.dataset.placeholderEn;
+            });
+            document.documentElement.lang = lang;
+        }
+
+        function setLang(lang) {
+            document.getElementById('langFR').classList.toggle('active', lang === 'fr');
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+            applyLangToDOM(lang);
+            bannerWords = lang === 'fr' ? bannerWordsFR : bannerWordsEN;
+            taskbarWords = lang === 'fr' ? taskbarWordsFR : taskbarWordsEN;
+            wordIndex = 0; charIndex = 0; deleting = false;
+            wi = 0; ci = 0; del = false;
+            target.textContent = '';
+            taskbarWord.textContent = '';
+            updateThemeLabel(lang);
+            localStorage.setItem('lang', lang);
+        }
+
+        // =============================================
+        // VOICEOVER
+        // =============================================
+        let isReading = false;
+
+        const voiceTexts = {
+            fr: "Bonjour, bienvenue sur le portfolio d'Alexia Walter, infographiste et web-designer passionnée par le dessin et le design graphique.",
+            en: "Hello, welcome to Alexia Walter's portfolio, a passionate graphic designer and web designer."
+        };
+
+        function playVoice(lang) {
+            const indicator = document.getElementById('reading-indicator');
+            const voiceBtnFR = document.getElementById('voiceFR');
+            const voiceBtnEN = document.getElementById('voiceEN');
+
+            if (isReading) {
+                window.speechSynthesis.cancel();
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(voiceTexts[lang]);
+            utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+            utterance.rate = 0.95;
+
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(v => v.lang.startsWith(lang === 'fr' ? 'fr' : 'en'));
+            if (voice) utterance.voice = voice;
+
+            utterance.onend = () => {
+                isReading = false;
+                indicator.classList.remove('show');
+                voiceBtnFR.classList.remove('active');
+                voiceBtnEN.classList.remove('active');
+            };
+
+            window.speechSynthesis.speak(utterance);
+            isReading = true;
+            indicator.classList.add('show');
+            if (lang === 'fr') voiceBtnFR.classList.add('active');
+            else voiceBtnEN.classList.add('active');
+        }
+
+        window.speechSynthesis.getVoices();
+
+        // =============================================
+        // MODE CLAIR / SOMBRE
+        // =============================================
+        const btnTheme = document.getElementById('btn-theme');
+        const themeLabel = document.getElementById('theme-label');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function updateThemeLabel(lang) {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            // L'icône et le label indiquent vers où on peut aller (pas l'état actuel)
+            if (isLight) {
+                // On est en clair → on propose le sombre
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = lang === 'en' ? 'Dark mode' : 'Mode sombre';
+            } else {
+                // On est en sombre → on propose le clair
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = lang === 'en' ? 'Light mode' : 'Mode clair';
+            }
+        }
+
+        function setDark(dark) {
+            const lang = document.documentElement.lang || 'fr';
+            if (dark) {
+                document.documentElement.classList.remove('light-mode');
+                document.body.classList.remove('light');
+                btnTheme.classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+                // Logo et bannière mode sombre
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-1.webp';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                document.body.classList.add('light');
+                btnTheme.classList.add('active');
+                localStorage.setItem('theme', 'light');
+                // Logo et bannière mode clair
+                document.getElementById('logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+                document.getElementById('footer-logo-img').src = 'IMAGES/LOGOS/logo-2.webp';
+            }
+            updateThemeLabel(lang);
+        }
+
+        btnTheme.addEventListener('click', () => {
+            setDark(document.documentElement.classList.contains('light-mode'));
+        });
+
+        // =============================================
+        // INITIALISATION
+        // =============================================
+        (function init() {
+            const savedTheme = localStorage.getItem('theme');
+            setDark(savedTheme !== 'light');
+            const savedLang = localStorage.getItem('lang') || 'fr';
+            setLang(savedLang);
+            window.speechSynthesis.getVoices();
+        })();
+    </script>
+
+</body>
+
+</html>
